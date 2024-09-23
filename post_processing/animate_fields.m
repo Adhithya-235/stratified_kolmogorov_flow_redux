@@ -11,11 +11,11 @@
 %% READ DATA
 
 [x, z, X, Z]           = get_space_data(folder_name, data_folder, file_name, wrap);
-[t, ~, ~, b, ~, ~, nf] = get_field_data(folder_name, data_folder, file_name, stride, svec, wrap);
+[t, ~, ~, ~, vort, nf] = get_field_data(folder_name, data_folder, file_name, stride, svec, wrap);
 
 %% MAKE MOVIE AND COLLECT FRAMES
 
-MOV = help_animate_fields(X,Z,b,'$b(x,z,t)$',t,nf);
+MOV = help_animate_fields(X/Fr,Z,vort,'$\zeta(x,z,t)$',t,nf);
 
 %% CREATE AVI FILE
 

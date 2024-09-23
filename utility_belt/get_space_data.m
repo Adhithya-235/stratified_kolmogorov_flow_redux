@@ -17,6 +17,7 @@ z = h5read(fname,'/scales/z/1.0');
 
 if wrap == 1
     x = cat(1, x, 2*x(end)-x(end-1));
+    z = cat(1, z, 2*z(end)-z(end-1));
 end
 
 %% MESHGRID

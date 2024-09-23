@@ -10,8 +10,8 @@
 
 %% READ DATA
 
-[x, z, X, Z]              = get_space_data(folder_name, data_folder, file_name, wrap);
-[t, u, ~, b, ~, vort, nf] = get_field_data(folder_name, data_folder, file_name, stride, svec, wrap);
+[x, z, X, Z]           = get_space_data(folder_name, data_folder, file_name, wrap);
+[t, u, ~, b, vort, nf] = get_field_data(folder_name, data_folder, file_name, stride, svec, wrap);
 
 %% INITIALIZE FIGURE
 
@@ -24,24 +24,24 @@ for i = 1:nf
 
     %% PLOT b
 
-    subplot(131)
-    clim = [min(min(min(b))), max(max(max(b)))];
-    help_plot_fields(X,Z,b(:,:,i),clim,[],t(i))
+    subplot(311)
+    clim = [0, 4*pi/3];
+    help_plot_fields(X/Fr,Z,z+b(:,:,i),clim,[],t(i))
     title('Buoyancy','interpreter','latex')
 
     %% PLOT u
 
-    subplot(132)
-    clim = [min(min(min(u))), max(max(max(u)))];
-    help_plot_fields(X,Z,u(:,:,i),clim,[],t(i))
+    subplot(312)
+    clim = [-1, 1];
+    help_plot_fields(X/Fr,Z,u(:,:,i),clim,[],t(i))
     title('Horz. Velocity','interpreter','latex')
 
     %% PLOT vort
 
-    subplot(133)
+    subplot(313)
     %clim = [min(min(min(vort))), max(max(max(vort)))];
-    clim = [0, 3];
-    help_plot_fields(X,Z,vort(:,:,i),clim,[],t(i))
+    clim = [-3, 3];
+    help_plot_fields(X/Fr,Z,vort(:,:,i),clim,[],t(i))
     title('Vorticity','interpreter','latex')
 
     %% DRAW FRAME

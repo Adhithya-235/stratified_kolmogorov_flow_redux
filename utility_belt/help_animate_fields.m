@@ -15,8 +15,8 @@ MOV(nf) = struct('cdata',[],'colormap',[]);
 
 %Cmax = max(max(max(max(PHI))));
 %Cmin = min(min(min(min(PHI))));
-Cmax = 2;
-Cmin = -2;
+Cmax = 3;
+Cmin = -3;
 
 %% ANIMATE SLICES
 

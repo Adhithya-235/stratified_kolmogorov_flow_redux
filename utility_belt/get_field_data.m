@@ -1,4 +1,4 @@
-function [t, u, w, b, p, vort, nf] = get_field_data(folder_name, data_folder, file_name, stride, svec, wrap)
+function [t, u, w, b, vort, nf] = get_field_data(folder_name, data_folder, file_name, stride, svec, wrap)
 
 % This function reads HDF5 data produced by dedalus and extracts temporal
 % grid as well as 3-dimensional (x, z, t) primitive variable fields. 
@@ -21,7 +21,6 @@ end
 u    = [];
 w    = [];
 b    = [];
-p    = [];
 vort = [];
 t    = [];
 
@@ -31,7 +30,6 @@ for s = 1:maxs
    u    = cat(3, u, h5read(fname(s), '/tasks/u',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
    w    = cat(3, w, h5read(fname(s), '/tasks/w',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
    b    = cat(3, b, h5read(fname(s), '/tasks/b',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
-   p    = cat(3, p, h5read(fname(s), '/tasks/p',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
    vort = cat(3, vort, h5read(fname(s), '/tasks/o',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
  end
 
@@ -42,8 +40,12 @@ if wrap == 1
     u    = cat(2, u, u(:, 1, :));
     w    = cat(2, w, w(:, 1, :));
     b    = cat(2, b, b(:, 1, :));
-    p    = cat(2, p, p(:, 1, :));
     vort = cat(2, vort, vort(:, 1, :));
+
+    u    = cat(1, u, u(1, :, :));
+    w    = cat(1, w, w(1, :, :));
+    b    = cat(1, b, b(1, :, :));
+    vort = cat(1, vort, vort(1, :, :));
 end
 
 %% DETERMINE TIMESERIES LENGTH

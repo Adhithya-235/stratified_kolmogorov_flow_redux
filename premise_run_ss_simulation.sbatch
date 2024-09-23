@@ -47,11 +47,11 @@ cd $HOME/Research_Active_Projects/stratified_kolmogorov_flow_redux/post_processi
 echo "Plotting KE timeseries."
 matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; maxs=1; plot_te"
 echo "Plotting probe frames."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=100; svec=[1:100]; wrap=0; plot_fields"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=100; svec=[1:100]; wrap=0; Fr = 0.02; plot_fields"
 echo "Plotting perturbation energies."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:100]; wrap=1; unwrap=0; Ri=0.2; plot_pte"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:100]; wrap=1; unwrap=0; Fr=0.02; plot_pte"
 echo "Animating vorticity slices."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:100]; wrap=0; animate_fields"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:100]; wrap=0; Fr = 0.02; animate_fields"
 
 # Display a message indicating completion
 echo "Simulation complete. Post processing complete. Results saved in $folder_name."

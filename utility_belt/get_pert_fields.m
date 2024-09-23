@@ -17,6 +17,7 @@ datap = data - datam;
 
 if unwrap == 1
    datap(:, end, :) = [];
+   datap(end, :, :) = [];
 end
 
 end

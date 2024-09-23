@@ -20,11 +20,10 @@ c1.Limits = clim;
 c1.FontSize = 20;
 c1.Location = 'eastoutside';
 hold on
-set(gca, 'fontsize', 20)
+set(gca, 'fontsize', 30)
 axis tight
-ylim([-4,4])
 box on
 set(gca, 'boxstyle', 'full', 'linewidth', 4)
-daspect([1 1 1])
+daspect([2 1 1])
 
 end

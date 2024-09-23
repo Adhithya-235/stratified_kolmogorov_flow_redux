@@ -6,7 +6,7 @@
 %        matlab -batch "clear;close all;clc;addpath('../utility_belt'); ...
 %               folder_name='$folder_name'; data_folder='$data_folder';...
 %                    file_name='field_snapshots'; stride=20; svec=[1:3]; wrap=1; unwrap=0;...
-%                          Ri = 0.1; plot_pte"
+%                          Fr = 0.02; plot_pte"
 %
 %=======================================================================%
 
@@ -28,8 +28,8 @@ Lz = abs(z(end))+abs(z(1));
 
 %% FORM LOCAL KE AND TE
 
-lke = up.^2 + wp.^2;
-lpe = Ri*(bp.^2);
+lke = up.^2 + (Fr*wp).^2;
+lpe = (bp.^2);
 
 %% CALCULATE VOLUME AVERAGE
 
@@ -63,7 +63,6 @@ xlabel('$t$', 'interpreter', 'latex')
 ylabel('Pert Energy', 'interpreter', 'latex')
 legend('KE','PE','TE', 'interpreter', 'latex')
 set(gca, 'fontsize', 30)
-%xlim([t(1), t(end)])
 xlim([t(1), t(end)])
 grid on
 box on

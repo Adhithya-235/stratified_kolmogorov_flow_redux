@@ -56,7 +56,7 @@ args = docopt(__doc__)
 ReynoldsB    = float(args['--Rb'])                                                             # Buoyancy Reynolds Number
 Prandtl      = float(args['--Pr'])                                                             # Prandtl Number
 Froude       = float(args['--Fr'])                                                             # Froude Number
-Lx, Lz       = (1.0, 4.0*np.pi/3.0)                                                            # Box Size
+Lx, Lz       = (6.0*np.pi/0.34, 4.0*np.pi/3.0)                                                 # Box Size
 Nx, Nz       = (int(args['--Nx']), int(args['--Nz']))                                          # No. of Gridpoints
 stop_time    = float(args['--Tend'])                                                           # Sim. stop time
 
@@ -194,6 +194,7 @@ snapshot.add_task("zeta", name = 'zeta')
 globalp = solver.evaluator.add_file_handler(path+"/energy_timeseries", sim_dt=0.01, max_writes=10000000, mode=fh_mode)
 globalp.add_task("KE", name = 'KE')
 globalp.add_task("PE", name = 'PE')
+globalp.add_task("TE", name = 'TE')
 
 photo = solver.evaluator.add_file_handler(path+"/checkpointing_data", sim_dt=25, max_writes=100, mode=fh_mode)
 photo.add_system(solver.state)
