@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=sss_code
+#SBATCH --job-name=sskf_code
 #SBATCH --output=/mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/logger_branch4.out
 #SBATCH --error=/mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/logger_branch4.err
 #SBATCH --mail-user=as1751@wildcats.unh.edu
