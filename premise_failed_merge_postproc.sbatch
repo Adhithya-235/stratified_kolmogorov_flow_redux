@@ -26,9 +26,9 @@ folder_name=2024-09-23_09-09-44
 data_folder=results_branch4
 
 # Merge processes
-mpiexec -n 24 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$folder_name"/"$data_folder"/field_snapshots
-mpiexec -n 24 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$folder_name"/"$data_folder"/energy_timeseries
-mpiexec -n 24 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$folder_name"/"$data_folder"/checkpointing_data
+# mpiexec -n 24 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$folder_name"/"$data_folder"/field_snapshots
+# mpiexec -n 24 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$folder_name"/"$data_folder"/energy_timeseries
+# mpiexec -n 24 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$folder_name"/"$data_folder"/checkpointing_data
 
 # Move generated data and logging files to the created folder
 mv logger_postproc.* "$folder_name/"

@@ -56,7 +56,7 @@ args = docopt(__doc__)
 ReynoldsB    = float(args['--Rb'])                                                             # Buoyancy Reynolds Number
 Prandtl      = float(args['--Pr'])                                                             # Prandtl Number
 Froude       = float(args['--Fr'])                                                             # Froude Number
-Lx, Lz       = (6.0*np.pi/0.34, 4.0*np.pi/3.0)                                                 # Box Size
+Lx, Lz       = (Froude*6.0*np.pi/0.34, 4.0*np.pi/3.0)                                                 # Box Size
 Nx, Nz       = (int(args['--Nx']), int(args['--Nz']))                                          # No. of Gridpoints
 stop_time    = float(args['--Tend'])                                                           # Sim. stop time
 
@@ -185,7 +185,7 @@ else:
     
 # ANALYSIS
 
-snapshot = solver.evaluator.add_file_handler(path+"/field_snapshots", sim_dt=0.01, max_writes=100, mode=fh_mode)
+snapshot = solver.evaluator.add_file_handler(path+"/field_snapshots", sim_dt=0.05, max_writes=100, mode=fh_mode)
 snapshot.add_task("u", name = 'u')
 snapshot.add_task("w", name = 'w')
 snapshot.add_task("b", name = 'b')

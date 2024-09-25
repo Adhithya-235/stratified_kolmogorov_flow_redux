@@ -30,7 +30,7 @@ for s = 1:maxs
    u    = cat(3, u, h5read(fname(s), '/tasks/u',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
    w    = cat(3, w, h5read(fname(s), '/tasks/w',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
    b    = cat(3, b, h5read(fname(s), '/tasks/b',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
-   vort = cat(3, vort, h5read(fname(s), '/tasks/o',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
+   vort = cat(3, vort, h5read(fname(s), '/tasks/zeta',[1,1,1],[Inf,Inf,Inf],[1,1,stride]));
  end
 
 
