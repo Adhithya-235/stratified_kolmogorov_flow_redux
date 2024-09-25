@@ -76,7 +76,7 @@ if MPI.COMM_WORLD.rank == 0:
 
 x_basis = de.Fourier("x", Nx, interval=(0, Lx), dealias=3/2)
 z_basis = de.Fourier("z", Nz, interval=(0, Lz), dealias=3/2)
-domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[24,1])
+domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[16,1])
 x, z    = domain.grids(scales=1)
 
 # FORCING TERM
