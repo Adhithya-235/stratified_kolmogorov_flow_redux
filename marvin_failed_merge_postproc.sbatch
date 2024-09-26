@@ -20,7 +20,7 @@ conda activate dedalus-20221006
 
 # Point to solution folder system
 cd $HOME/Command_Center/Research/stacked_stratified_shear/
-folder_name=2024-08-13_06-36-57
+folder_name=2024-09-26_10-38-56
 data_folder=results_branch4
 
 # Merge processes

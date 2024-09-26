@@ -47,8 +47,8 @@ set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96])
 
 %% CHECK AGAINST LINEAR GROWTH RATE
 
-%tlin = 0:0.1:40;
-%grcv = 0.00002*exp(2*0.07937*tlin);
+tlin = 0:0.005:0.3;
+grcv = 0.000002*exp(2*20.5*tlin);
 
 %% PLOT TIMESERIES
 
@@ -58,7 +58,7 @@ hold on
 plot(t, pke, '-o', 'linewidth', 3)
 plot(t, ppe, '-o', 'linewidth', 3)
 plot(t, pte, '-o', 'linewidth', 3)
-%plot(tlin, grcv, 'ko', 'linewidth', 3)
+plot(tlin, grcv, 'ko', 'linewidth', 3)
 xlabel('$t$', 'interpreter', 'latex')
 ylabel('Pert Energy', 'interpreter', 'latex')
 legend('KE','PE','TE', 'interpreter', 'latex')
@@ -71,5 +71,5 @@ drawnow
     
 %% SAVE PLOT
 
-saveas(f, sprintf('../%s/plots/timeseries/pertenergy_timeseries.fig', folder_name)) 
-saveas(f, sprintf('../%s/plots/timeseries/pertenergy_timeseries.png', folder_name)) 
+saveas(f, sprintf('../%s/plots/timeseries/pertenergy_timeseries_grver.fig', folder_name)) 
+saveas(f, sprintf('../%s/plots/timeseries/pertenergy_timeseries_grver.png', folder_name)) 

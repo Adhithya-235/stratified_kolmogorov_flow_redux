@@ -20,7 +20,7 @@ MOV = help_animate_fields(X/Fr,Z,vort,'$\zeta(x,z,t)$',t,nf);
 %% CREATE AVI FILE
 
 fprintf('Writing movie to file...\n')
-filename = sprintf('../%s/plots/movies/buoyancy_production.avi', folder_name);
+filename = sprintf('../%s/plots/movies/vorticity_production.avi', folder_name);
 v = VideoWriter(filename); 
 v.FrameRate = 16;
 open(v)
