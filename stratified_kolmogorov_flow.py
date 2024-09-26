@@ -159,11 +159,23 @@ if not pathlib.Path('restart.h5').exists():
 
     eigenfuncs = h5py.File('initialize_branch4.h5','r');
 
+    # CHANGE SCALES FOR READING IN DATA
+
+    zeta.set_scales(1/2)
+    psi.set_scales(1/2)
+    b.set_scales(1/2)
+
     # BACKGROUND CONFIGURATIONS + EIGENFUNCTIONS
     
     zeta['g'] = eigenfuncs.get('zeta')[slices]
     psi['g']  = eigenfuncs.get('psi')[slices]
     b['g']    = eigenfuncs.get('b')[slices]
+
+    # CHANGE SCALES FOR OPERATING WITH DATA
+
+    zeta.set_scales(1)
+    psi.set_scales(1)
+    b.set_scales(1)
 
     # INTEGRATION PARAMETERS
     
@@ -185,7 +197,7 @@ else:
     
 # ANALYSIS
 
-snapshot = solver.evaluator.add_file_handler(path+"/field_snapshots", sim_dt=0.05, max_writes=100, mode=fh_mode)
+snapshot = solver.evaluator.add_file_handler(path+"/field_snapshots", sim_dt=0.005, max_writes=100, mode=fh_mode)
 snapshot.add_task("u", name = 'u')
 snapshot.add_task("w", name = 'w')
 snapshot.add_task("b", name = 'b')

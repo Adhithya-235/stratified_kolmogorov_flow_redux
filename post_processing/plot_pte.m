@@ -13,7 +13,7 @@
 %% READ DATA
 
 [x, z, ~, ~]              = get_space_data(folder_name, data_folder, file_name, wrap);
-[t, u, w, b, ~, ~, nf]    = get_field_data(folder_name, data_folder, file_name, stride, svec, wrap);
+[t, u, w, b, ~, nf]       = get_field_data(folder_name, data_folder, file_name, stride, svec, wrap);
 
 %% GET DOMAIN DIMENSIONS
 
