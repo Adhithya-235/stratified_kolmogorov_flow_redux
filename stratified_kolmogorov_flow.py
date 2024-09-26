@@ -76,7 +76,7 @@ if MPI.COMM_WORLD.rank == 0:
 
 x_basis = de.Fourier("x", Nx, interval=(0, Lx), dealias=3/2)
 z_basis = de.Fourier("z", Nz, interval=(0, Lz), dealias=3/2)
-domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[16,1])
+domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[24,1])
 x, z    = domain.grids(scales=1)
 
 # FORCING TERM
@@ -159,23 +159,11 @@ if not pathlib.Path('restart.h5').exists():
 
     eigenfuncs = h5py.File('initialize_branch4.h5','r');
 
-    # CHANGE SCALES FOR READING IN DATA
-
-    zeta.set_scales(1/2)
-    psi.set_scales(1/2)
-    b.set_scales(1/2)
-
     # BACKGROUND CONFIGURATIONS + EIGENFUNCTIONS
     
     zeta['g'] = eigenfuncs.get('zeta')[slices]
     psi['g']  = eigenfuncs.get('psi')[slices]
     b['g']    = eigenfuncs.get('b')[slices]
-
-    # CHANGE SCALES FOR OPERATING WITH DATA
-
-    zeta.set_scales(1)
-    psi.set_scales(1)
-    b.set_scales(1)
 
     # INTEGRATION PARAMETERS
     
