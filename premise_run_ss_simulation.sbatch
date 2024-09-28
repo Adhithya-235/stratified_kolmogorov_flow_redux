@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=sskf_code
-#SBATCH --output=/mnt/lz01/chini/as1751-new/Research_Active_Projects/stratified_kolmogorov_flow_redux/logger_branch4.out
-#SBATCH --error=/mnt/lz01/chini/as1751-new/Research_Active_Projects/stratified_kolmogorov_flow_redux/logger_branch4.err
+#SBATCH --output=/mnt/lz01/chini/as1751-new/Research_Active_Projects/stratified_kolmogorov_flow_redux/logger_branch1.out
+#SBATCH --error=/mnt/lz01/chini/as1751-new/Research_Active_Projects/stratified_kolmogorov_flow_redux/logger_branch1.err
 #SBATCH --mail-user=as1751@wildcats.unh.edu
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=16
@@ -24,7 +24,7 @@ module load MATLAB/R2022b_Update_3
 # Create a folder with the current date and time
 folder_name=$(date +'%Y-%m-%d_%H-%M-%S')
 mkdir "$folder_name"
-data_folder=results_branch4
+data_folder=results_branch1
 mkdir "$data_folder"
 
 # Make plotting subfolders
@@ -39,7 +39,7 @@ mpiexec -n 16 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$dat
 mpiexec -n 16 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$data_folder"/checkpointing_data
 
 # Move generated data and logging files to the created folder
-mv "$data_folder/" logger_branch4.* "$folder_name/"
+mv "$data_folder/" logger_branch1.* "$folder_name/"
 cp stratified_kolmogorov_flow.py premise_run_ss_simulation.sbatch "$folder_name/"
 
 # Create analysis plots after navigating to post processing code folder
@@ -47,11 +47,11 @@ cd $HOME/Research_Active_Projects/stratified_kolmogorov_flow_redux/post_processi
 echo "Plotting KE timeseries."
 matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; maxs=1; plot_te"
 echo "Plotting probe frames."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=20; svec=[1:10]; wrap=0; Fr = 0.02; plot_fields"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=100; svec=[1:50]; wrap=0; Fr = 0.02; plot_fields"
 echo "Plotting perturbation energies."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:10]; wrap=1; unwrap=0; Fr=0.02; plot_pte"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:50]; wrap=1; unwrap=0; Fr=0.02; plot_pte"
 echo "Animating vorticity slices."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:10]; wrap=0; Fr = 0.02; animate_fields"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:50]; wrap=0; Fr = 0.02; animate_fields"
 
 # Display a message indicating completion
 echo "Simulation complete. Post processing complete. Results saved in $folder_name."
