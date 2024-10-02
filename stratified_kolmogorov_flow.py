@@ -67,7 +67,7 @@ if MPI.COMM_WORLD.rank == 0:
 
 # CREATE RESULTS FOLDER
 
-path = 'results_branch1/'
+path = 'results_branch4/'
 if MPI.COMM_WORLD.rank == 0:
     if not os.path.exists(path):
         os.mkdir(path)    
@@ -76,7 +76,7 @@ if MPI.COMM_WORLD.rank == 0:
 
 x_basis = de.Fourier("x", Nx, interval=(0, Lx), dealias=3/2)
 z_basis = de.Fourier("z", Nz, interval=(0, Lz), dealias=3/2)
-domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[16,1])
+domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[32,1])
 x, z    = domain.grids(scales=1)
 
 # FORCING TERM
@@ -157,7 +157,7 @@ if not pathlib.Path('restart.h5').exists():
 
     # GET EIGENFUNCTIONS FROM FILE
 
-    eigenfuncs = h5py.File('initialize_branch1.h5','r');
+    eigenfuncs = h5py.File('initialize_branch4.h5','r');
 
     # BACKGROUND CONFIGURATIONS + EIGENFUNCTIONS
     
