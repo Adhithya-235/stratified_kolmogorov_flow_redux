@@ -2,7 +2,10 @@
 !post_processing/
 !utility_belt/
 !linear_stability/
-linear_stability/**/
+!interactive_processing
+interactive_processing/*.mat
+interactive_processing/*.png
+linear_stability/*.mat
 *.mat
 !slanCM_Data.mat
 *.h5

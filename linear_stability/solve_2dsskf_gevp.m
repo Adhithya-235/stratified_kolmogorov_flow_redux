@@ -1,11 +1,7 @@
-function [sigm, vort, buoy, strm, z] = solve_2dsskf_gevp(N, H, Fr, Pr, Rb, k, m, inviscid)
+function [sigm, vort, buoy, strm, z] = solve_2dsskf_gevp(Ub, Ub2, Bb1, N, H, Fr, Pr, Rb, k, m, inviscid)
 
 %   Set up and solve a generalized eigenvalue problem for 2D Strongly
 %   Stratified Kolmogorov Flow. 
-
-%% CONSTRUCT BASIC STATE
-
-[Ub, Ub2, Bb1, ~] = construct_base_state(N, H, m);
 
 %% CONSTRUCT LINEAR OPERATORS
 

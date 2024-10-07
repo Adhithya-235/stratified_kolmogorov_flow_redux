@@ -48,7 +48,7 @@ set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96])
 %% CHECK AGAINST LINEAR GROWTH RATE
 
 tlin = 0:0.005:0.3;
-grcv = 0.000002*exp(2*20.5*tlin);
+grcv = 0.000001*exp(2*6*tlin);
 
 %% PLOT TIMESERIES
 
