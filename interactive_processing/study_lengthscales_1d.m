@@ -8,11 +8,11 @@ addpath('../utility_belt');
 
 %% FILE PARAMETERS
 
-folder_name = '2024-09-29_02-47-09'; 
+folder_name = '2024-10-02_13-49-55'; 
 data_folder = 'results_branch4'; 
 file_name   = 'field_snapshots'; 
 stride      = 1; 
-svec        = 7:9; 
+svec        = 11; 
 wrap        = 0; 
 unwrap      = 0; 
 
@@ -21,10 +21,10 @@ unwrap      = 0;
 Fr = 0.02;
 Rb = 50;
 Pr = 1;
-Lx = 1;
+Lx = Fr*6*pi/0.34;
 Lz = 4*pi/3;
-Nx = 512;
-Nz = 512;
+Nx = 1024;
+Nz = 1024;
 dx = Lx/Nx;
 dz = Lz/Nz;
 
@@ -35,7 +35,7 @@ dz = Lz/Nz;
 
 %%  SELECT VORTICITY SLICE
 
-tindex    = find(abs(t-8.49)<1e-3);
+tindex    = find(abs(t-10.87)<1e-3);
 zindex    = find(abs(z-2.5)<dz);
 vortslice = vort(zindex(1), :, tindex);
 
@@ -44,8 +44,8 @@ vortslice = vort(zindex(1), :, tindex);
 f1 = figure;
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96])
 hold on
-plot(x, vortslice, '-o', 'linewidth', 4, 'markersize', 3)
-xlabel('$x$', 'interpreter', 'latex')
+plot(x/Fr, vortslice, '-o', 'linewidth', 4, 'markersize', 3)
+xlabel('$x/Fr$', 'interpreter', 'latex')
 ylabel('$\xi$', 'interpreter', 'latex')
 title(sprintf('Vorticity at t = %.2f and z = %.2f', t(tindex), z(zindex(1))))
 set(gca, 'fontsize', 30)
@@ -53,6 +53,7 @@ axis tight
 grid on
 box on
 set(gca, 'linewidth', 5, 'XScale', 'linear', 'YScale', 'linear')
+daspect([1 1 1])
 saveas(f1, 'vorticityslice.png') 
 
 %% TAKE FFT

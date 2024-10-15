@@ -13,12 +13,12 @@ inviscid = 0;
 %% ENTER PROBLEM PARAMETERS
 
 H  = 4*pi/3;
-N  = 512;
+N  = 768;
 Fr = 0.02;
 Rb = 50;
 Pr = 1;
 % k  = (0.34/3)*[1,6,12,19]; 
-k  = linspace(0.001, 6, 300);
+k  = linspace(0.001, 6, 250);
 kx = k/Fr;
 m  = 3;
 
@@ -86,7 +86,7 @@ axis square
 ylim([-4,4])
 grid on
 box on
-set(gca,'FontSize',fs,'LineWidth',lw,'GridLineWidth',2)
+set(gca,'FontSize',fs,'LineWidth',lw)
 
 yyaxis right
 hold on 
@@ -96,20 +96,21 @@ end
 ylabel('$Fr\, \mathcal{R}[\sigma]$','Interpreter','latex')
 xlabel('$Fr\, k_x$','Interpreter','latex')
 axis square
-ylim([-2,2])
+ylim([-1, 1])
 grid on
 box on
-set(gca,'FontSize',fs,'LineWidth',lw,'GridLineWidth',2)
+set(gca,'FontSize',fs,'LineWidth',lw)
 drawnow
 
 %% SAVE PLOT AND DATA
 
 parstring = sprintf('Fr_%1.3f_Reb_%3.2f_Pr_%1.2f', Fr, Rb, Pr);
-mkdir(['solutions\dns_ics\',parstring])
 filename = sprintf('solution_%s.mat',parstring);
 fig      = sprintf('eigenvals.png');
+fig2     = sprintf('eigenvals.fig');
+saveas(f1,fig);
+saveas(f1,fig2);
 save(filename,"grate","phspd", "vort","buoy","strm","z",...
     "kx","Rb","Pr","Fr","m");
-saveas(f1,fig);
 
 

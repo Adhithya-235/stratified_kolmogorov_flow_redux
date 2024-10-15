@@ -12,7 +12,7 @@ folder_name = '2024-10-02_13-49-55';
 data_folder = 'results_branch4'; 
 file_name   = 'field_snapshots'; 
 stride      = 1; 
-svec        = 8; 
+svec        = 9; 
 wrap        = 1; 
 unwrap      = 0; 
 
@@ -35,7 +35,7 @@ dz = Lz/Nz;
 
 %%  SELECT VORTICITY SLICE
 
-tindex = find(abs(t-7.18)<1e-3);
+tindex = find(abs(t-8.14)<1e-3);
 uslice = u(:, :, tindex);
 bslice = b(:, :, tindex);
 
@@ -52,7 +52,7 @@ z(end)  = [];
 
 %% INTERPOLATE 
 
-Nz_target = 512;
+Nz_target = 768;
 dz_target = Lz/Nz_target;
 z_target  = (0:Nz_target-1)*dz_target;
 um_target = interpft(um,Nz_target);
