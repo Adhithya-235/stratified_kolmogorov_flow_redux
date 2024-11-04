@@ -33,7 +33,7 @@ mkdir -p "$folder_name/plots/frames"
 mkdir -p "$folder_name/plots/movies"
 
 # Run simulation, merge processes
-mpiexec -n 16 $HOME/.conda/envs/dedalus/bin/python3 stratified_kolmogorov_flow.py --Rb=50.0 --Pr=1.0 --Fr=0.02 --Nx=512 --Nz=512 --Tend=50.0 
+mpiexec -n 16 $HOME/.conda/envs/dedalus/bin/python3 stratified_kolmogorov_flow.py --Rb=50.0 --Pr=1.0 --Fr=0.02 --Nx=1024 --Nz=1024 --Tend=15.0 
 mpiexec -n 16 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$data_folder"/field_snapshots
 mpiexec -n 16 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$data_folder"/energy_timeseries
 mpiexec -n 16 $HOME/.conda/envs/dedalus/bin/python3 -m dedalus merge_procs "$data_folder"/checkpointing_data
@@ -47,13 +47,13 @@ cd $HOME/Research_Active_Projects/stratified_kolmogorov_flow_redux/post_processi
 echo "Plotting KE timeseries."
 matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; maxs=1; plot_te"
 echo "Plotting probe frames."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=100; svec=[1:50]; wrap=0; Fr = 0.02; plot_fields"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=100; svec=[1:15]; wrap=0; Fr = 0.02; plot_fields"
 echo "Plotting perturbation energies."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:50]; wrap=1; unwrap=0; Fr=0.02; plot_pte"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:15]; wrap=1; unwrap=0; Fr=0.02; plot_pte"
 echo "Plotting spacetime vorticity."
 matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:15]; wrap=1; unwrap=0; Fr=0.02; plot_spacetime"
 echo "Animating vorticity slices."
-matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:50]; wrap=0; Fr = 0.02; animate_fields"
+matlab -batch "clear; close all; clc; addpath('../utility_belt'); folder_name='$folder_name'; data_folder='$data_folder'; file_name='field_snapshots'; stride=1; svec=[1:15]; wrap=0; Fr = 0.02; animate_fields"
 
 # Display a message indicating completion
 echo "Simulation complete. Post processing complete. Results saved in $folder_name."
