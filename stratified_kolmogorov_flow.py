@@ -157,7 +157,7 @@ if not pathlib.Path('restart.h5').exists():
 
     # GET EIGENFUNCTIONS FROM FILE
 
-    eigenfuncs = h5py.File('initialize_branch1.h5','r');
+    eigenfuncs = h5py.File('initialize_branch1.h5','r')
 
     # BACKGROUND CONFIGURATIONS + EIGENFUNCTIONS
     

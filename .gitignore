@@ -1,8 +1,10 @@
 **/
 !post_processing/
+!post_processing_galerkin/
 !utility_belt/
 !linear_stability/
 !interactive_processing
+!jupyter_notebooks
 interactive_processing/*.mat
 interactive_processing/*.png
 interactive_processing/*.fig
