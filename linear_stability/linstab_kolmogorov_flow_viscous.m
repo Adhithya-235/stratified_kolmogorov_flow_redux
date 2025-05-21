@@ -13,9 +13,9 @@ inviscid = 0;
 %% ENTER PROBLEM PARAMETERS
 
 H  = 4*pi/3;
-N  = 768;
+N  = 128;
 Fr = 0.02;
-Rb = 50;
+Rb = 1;
 Pr = 1;
 % k  = (0.34/3)*[1,6,12,19]; 
 k  = linspace(0.001, 6, 250);
