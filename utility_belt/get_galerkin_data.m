@@ -48,7 +48,7 @@ for s = 1:maxs
        varname  = strcat(groupname,'/',tasknames{varindex});   
        tempvar  = h5read(fname(s),varname);
        tempvar2 = tempvar.r+1i*tempvar.i;
-       if varindex == 5
+       if strcmp(tasknames{varindex},'w0') == 1
            tempvar2 = repmat(tempvar2, nz, 1);
        end
        gmodes(varindex).vars = cat(2, gmodes(varindex).vars, tempvar2);

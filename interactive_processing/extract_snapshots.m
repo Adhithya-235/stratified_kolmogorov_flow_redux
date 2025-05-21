@@ -8,11 +8,11 @@ addpath('../utility_belt');
 
 %% FILE PARAMETERS
 
-folder_name = '2024-09-29_02-47-09'; 
+folder_name = '2024-10-02_13-49-55'; 
 data_folder = 'results_branch4'; 
 file_name   = 'field_snapshots'; 
 stride      = 1; 
-svec        = 8; 
+svec        = 9; 
 wrap        = 0; 
 unwrap      = 0; 
 
@@ -23,8 +23,8 @@ Rb = 50;
 Pr = 1;
 Lx = 1;
 Lz = 4*pi/3;
-Nx = 512;
-Nz = 512;
+Nx = 1024;
+Nz = 1024;
 dx = Lx/Nx;
 dz = Lz/Nz;
 
@@ -35,7 +35,7 @@ dz = Lz/Nz;
 
 %%  SELECT VORTICITY SLICE
 
-tindex    = find(abs(t-7.05)<1e-3);
+tindex    = find(abs(t-8.43)<1e-3);
 vortslice = vort(:, :, tindex);
 bslice    = b(:, :, tindex);
 
