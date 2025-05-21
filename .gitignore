@@ -5,6 +5,8 @@
 !linear_stability/
 !interactive_processing
 !jupyter_notebooks
+!secondary_stability/
+!secondary_stability/import/*.mat
 interactive_processing/*.mat
 interactive_processing/*.png
 interactive_processing/*.fig
@@ -12,6 +14,7 @@ linear_stability/*.mat
 linear_stability/*.png
 linear_stability/*.fig
 *.mat
+*.asv
 !slanCM_Data.mat
 *.h5
 ?/
