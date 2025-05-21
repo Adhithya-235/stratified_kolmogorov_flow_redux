@@ -7,6 +7,8 @@
 !jupyter_notebooks
 !secondary_stability/
 !secondary_stability/import/
+!secondary_stability/grid_space_eigensolve/
+!secondary_stability/preprocessing/
 interactive_processing/*.mat
 interactive_processing/*.png
 interactive_processing/*.fig
