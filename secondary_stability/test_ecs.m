@@ -2,9 +2,13 @@ clear
 close all
 clc
 
+%% DIARY
+
+diary('logfile001.txt')
+
 %% PHYSICAL PARAMETERS
 
-Reb   = 1;                  % Buoyancy Reynolds
+Reb   = 12;                  % Buoyancy Reynolds
 Pr    = 1;                  % Prandtl
 Fr    = 0.01;               % Froude
 alpha = 0.5;                % x Floquet Modifier

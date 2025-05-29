@@ -91,7 +91,7 @@ de.operators.parseables['Kolmogorov'] = Forcing
 
 # PROBLEM SETUP
 
-problem = de.IVP(domain, variables=['xi0','psi0','b0','xi19','psi19','b19'])
+problem = de.IVP(domain, variables=['xi0','psi0','b0','xi4','psi4','b4','xi19','psi19','b19','xi23','psi23','b23'])
 
 # EQUATION ENTRY SUBSTITUTIONS
 
@@ -111,21 +111,34 @@ problem.substitutions['J0(A, B, n)']        = 'n*Jp(conj(A), B, B, conj(A)) - n*
 
 problem.substitutions['u0']  = 'dz(psi0)'
 problem.substitutions['w0']  = '-1.0*dx(psi0, 0)'
+problem.substitutions['u4']  = 'dz(psi4)'
+problem.substitutions['w4']  = '-1.0*dx(psi4, 4)'
 problem.substitutions['u19'] = 'dz(psi19)'
 problem.substitutions['w19'] = '-1.0*dx(psi19, 19)'
+problem.substitutions['u23'] = 'dz(psi23)'
+problem.substitutions['w23'] = '-1.0*dx(psi23, 23)'
 
 # EVOLUTION EQUATIONS 
     
-problem.add_equation("dt(xi0) - (1/Rb)*Lap(xi0, 0) = Kolmogorov(z) + J0(xi19, psi19, 19)")
-problem.add_equation("dt(b0)  - (1/(Pr*Rb))*Lap(b0, 0) = J0(b19, psi19, 19)")
-problem.add_equation("dt(xi19) + dx(b19, 19) - (1/Rb)*Lap(xi19, 19) = -19*Jm(xi19, psi0, psi19, xi0)")
-problem.add_equation("dt(b19) - dx(psi19, 19) - (1/(Pr*Rb))*Lap(b19, 19) = -19*Jm(b19, psi0, psi19, b0)") 
+problem.add_equation("dt(xi0) - (1/Rb)*Lap(xi0, 0) = Kolmogorov(z) + J0(xi4, psi4, 4) + J0(xi19, psi19, 19) + J0(xi23, psi23, 23)")
+problem.add_equation("dt(b0)  - (1/(Pr*Rb))*Lap(b0, 0) = J0(b4, psi4, 4) + J0(b19, psi19, 19) + J0(b23, psi23, 23)")
+
+problem.add_equation("dt(xi4) + dx(b4, 4) - (1/Rb)*Lap(xi4, 4) = -4*Jm(xi4, psi0, psi4, xi0) + 19*Jm(conj(xi19), psi23, conj(psi19), xi23) - 23*Jm(xi23, conj(psi19), psi23, conj(xi19))")
+problem.add_equation("dt(b4) - dx(psi4, 4) - (1/(Pr*Rb))*Lap(b4, 4) = -4*Jm(b4, psi0, psi4, b0) + 19*Jm(conj(b19), psi23, conj(psi19), b23) - 23*Jm(b23, conj(psi19), psi23, conj(b19))") 
+
+problem.add_equation("dt(xi19) + dx(b19, 19) - (1/Rb)*Lap(xi19, 19) = -19*Jm(xi19, psi0, psi19, xi0) + 4*Jm(conj(xi4), psi23, conj(psi4), xi23) - 23*Jm(xi23, conj(psi4), psi23, conj(xi4))")
+problem.add_equation("dt(b19) - dx(psi19, 19) - (1/(Pr*Rb))*Lap(b19, 19) = -19*Jm(b19, psi0, psi19, b0) + 4*Jm(conj(b4), psi23, conj(psi4), b23) - 23*Jm(b23, conj(psi4), psi23, conj(b4))") 
+
+problem.add_equation("dt(xi23) + dx(b23, 23) - (1/Rb)*Lap(xi23, 23) = -23*Jm(xi23, psi0, psi23, xi0) - 4*Jm(xi4, psi19, psi4, xi19) - 19*Jm(xi19, psi4, psi19, xi4)")
+problem.add_equation("dt(b23) - dx(psi23, 23) - (1/(Pr*Rb))*Lap(b23, 23) = -23*Jm(b23, psi0, psi23, b0) - 4*Jm(b4, psi19, psi4, b19) - 19*Jm(b19, psi4, psi19, b4)") 
 
 # CONSTRAINT EQUATIONS
     
 problem.add_equation("xi0 - Lap(psi0, 0) = 0", condition="(nz != 0)")
 problem.add_equation("psi0 = 0", condition="(nz == 0)")
+problem.add_equation("xi4 - Lap(psi4, 4) = 0")
 problem.add_equation("xi19 - Lap(psi19, 19) = 0")
+problem.add_equation("xi23 - Lap(psi23, 23) = 0")
 
 # BUILD SOLVER
 
@@ -139,16 +152,24 @@ xi0   = solver.state['xi0']
 psi0  = solver.state['psi0']
 b0    = solver.state['b0']
 
+xi4  = solver.state['xi4']
+psi4 = solver.state['psi4']
+b4   = solver.state['b4']
+
 xi19  = solver.state['xi19']
 psi19 = solver.state['psi19']
 b19   = solver.state['b19']
+
+xi23  = solver.state['xi23']
+psi23 = solver.state['psi23']
+b23   = solver.state['b23']
 
 # INITIALIZE NOISE IN PARALLEL SAFE MANNER
 
 gshape = domain.dist.grid_layout.global_shape(scales=1)
 slices = domain.dist.grid_layout.slices(scales=1)
 rand   = np.random.RandomState(seed=42)
-noise  = rand.standard_normal(gshape)[slices]
+noise  = (5e-4)*rand.standard_normal(gshape)[slices]
     
 # INITIALIZE MEAN FIELDS WITH BASIC STATE
 
@@ -165,6 +186,11 @@ eigenfuncs_imag = h5py.File('initialize_galerkin_imag.h5','r')
 xi19['g']  = eigenfuncs_real.get('xi19')[slices] + 1j*eigenfuncs_imag.get('xi19')[slices] 
 psi19['g'] = eigenfuncs_real.get('psi19')[slices] + 1j*eigenfuncs_imag.get('psi19')[slices]
 b19['g']   = eigenfuncs_real.get('b19')[slices] + 1j*eigenfuncs_imag.get('b19')[slices]
+
+# INITIALIZE THE OTHER MODES WITH NOISE
+
+b4['g']    = (1e-3)*np.cos(3.0*z)
+b23['g']   = (1e-3)*np.cos(3.0*z)
     
 # INTEGRATION PARAMETERS
     
@@ -179,15 +205,25 @@ snapshot.add_task("u0", name  = 'u0')
 snapshot.add_task("w0", name  = 'w0')
 snapshot.add_task("b0", name  = 'b0')
 snapshot.add_task("xi0", name = 'xi0')
+snapshot.add_task("u4", name  = 'u4')
+snapshot.add_task("w4", name  = 'w4')
+snapshot.add_task("b4", name  = 'b4')
+snapshot.add_task("xi4", name = 'xi4')
 snapshot.add_task("u19", name  = 'u19')
 snapshot.add_task("w19", name  = 'w19')
 snapshot.add_task("b19", name  = 'b19')
 snapshot.add_task("xi19", name = 'xi19')
+snapshot.add_task("u23", name  = 'u23')
+snapshot.add_task("w23", name  = 'w23')
+snapshot.add_task("b23", name  = 'b23')
+snapshot.add_task("xi23", name = 'xi23')
 
 # CFL 
 
 CFL = flow_tools.CFL(solver, initial_dt=dt, cadence=10, safety=0.1, max_change=2, min_change=0.5, max_dt=0.05, threshold=0.05)
 CFL.add_velocity('w19',0)
+CFL.add_velocity('w23',0)
+
 
 # FLOW TOOLS
 

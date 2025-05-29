@@ -8,11 +8,11 @@ addpath('../utility_belt');
 
 %% FILE PARAMETERS
 
-folder_name = '2024-10-18_15-01-21'; 
-data_folder = 'results_branch1'; 
+folder_name = '2024-10-02_13-49-55'; 
+data_folder = 'results_branch4'; 
 file_name   = 'field_snapshots'; 
 stride      = 1; 
-svec        = 1:15; 
+svec        = 8:15; 
 wrap        = 0; 
 unwrap      = 0; 
 
@@ -77,13 +77,12 @@ f2 = figure;
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96])
 hold on
 plot(t, vortspc(513,:), '-o', 'linewidth', 3)
-plot(t, vortspc(514,:), '-o', 'linewidth', 3)
-plot(t, vortspc(531,:), '-o', 'linewidth', 3)
+plot(t, vortspc(517,:), '-o', 'linewidth', 3)
 plot(t, vortspc(532,:), '-o', 'linewidth', 3)
-plot(t, vortspc(533,:), '-o', 'linewidth', 3)
+plot(t, vortspc(536,:), '-o', 'linewidth', 3)
 xlabel('$t$', 'interpreter', 'latex')
 ylabel('Enstrophy Density', 'interpreter', 'latex')
-legend('Mode 0','Mode 1','Mode 19', 'Mode 20', 'Mode 21', 'interpreter', 'latex', 'location', 'southeastoutside')
+legend('Mode 0','Mode 4','Mode 19', 'Mode 23', 'interpreter', 'latex', 'location', 'southeastoutside')
 set(gca, 'fontsize', 30)
 xlim([t(1), t(end)])
 ylim([1e-6, 1e1])
