@@ -1,4 +1,4 @@
-function combinedEigenfunctionPlot(X, Z, Xi, Psi, B)
+function dommode = combinedEigenfunctionPlot(X, Z, Xi, Psi, B)
 % combinedEigenfunctionPlot creates a publication-quality figure that contains
 % both the full 2D eigenfunction plots and a selected x-slice (midpoint) for each
 % eigenfunction. The top row shows the full-field plots using contourf and the bottom
@@ -31,7 +31,7 @@ set(groot, 'defaultLegendInterpreter', 'latex');
 set(groot, 'defaultTextInterpreter', 'latex');
 
 %% Create a full-screen figure with a tiled layout.
-fig = figure('WindowState', 'maximized');
+dommode = figure('WindowState', 'maximized');
 % Create a tiled layout with 2 rows and 3 columns.
 tiledlayout(3, 1, 'Padding', 'compact', 'TileSpacing','compact');
 

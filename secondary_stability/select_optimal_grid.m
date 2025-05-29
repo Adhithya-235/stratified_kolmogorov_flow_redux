@@ -12,7 +12,7 @@ end
 
 %% PARAMETERS
 
-numEig     = 1;
+numEig     = 30;
 outputflag = 0;
 relErr     = Inf;
 scale      = initialRescale;

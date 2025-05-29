@@ -30,7 +30,7 @@ type       = 'largestreal';
 opts.tol   = residualtol;
 opts.maxit = maxit;
 opts.disp  = outputflag;
-opts.p     = 20;
+opts.p     = 2*numEig + 1;
 opts.v0    = construct_StartVector(Nx, Nz); 
 opts.fail  = 'keep';
 
@@ -59,15 +59,16 @@ zp       = linspace(0, Lzp, Nz+1); zp = zp(1:end-1);
 
 %% FUNCTION OUTPUTS
 
-eigvals      = Fr*diag(D);
-eigvecs      = V;
-dom_mode.xp  = xp;
-dom_mode.zp  = zp;
-dom_mode.Xi  = Xi;
-dom_mode.B   = B;
-dom_mode.Psi = Psi;
+eigvals         = Fr*diag(D);
+eigvecs         = V;
+dom_mode.xp     = xp;
+dom_mode.zp     = zp;
+dom_mode.Xi     = Xi;
+dom_mode.B      = B;
+dom_mode.Psi    = Psi;
 meta.resolution = [Nx, Nz];
 meta.domainsize = [Lxp, Lzp];
 meta.itertime   = tIter; 
+meta.funhandle  = Afun;
 
 end
