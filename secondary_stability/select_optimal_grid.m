@@ -13,7 +13,7 @@ end
 %% PARAMETERS
 
 numEig     = 1;
-outputflag = 0;
+outputflag = 1;
 relErr     = Inf;
 scale      = initialRescale;
 prevEig    = NaN;

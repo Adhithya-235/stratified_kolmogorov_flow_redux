@@ -30,7 +30,7 @@ type       = 'largestreal';
 opts.tol   = residualtol;
 opts.maxit = maxit;
 opts.disp  = outputflag;
-opts.p     = 20;
+opts.p     = 51;
 opts.v0    = construct_StartVector(Nx, Nz); 
 opts.fail  = 'keep';
 

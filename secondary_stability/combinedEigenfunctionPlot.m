@@ -23,7 +23,7 @@ function combinedEigenfunctionPlot(X, Z, Xi, Psi, B)
 %% Aesthetic settings
 fs = 16;    % Font size for labels and titles
 lw = 3;     % Line width for plots and axes
-cmap = sky;  % Use the "turbo" colormap
+cmap = parula;  % Use the "turbo" colormap
 
 % Set default interpreter for LaTeX on axes tick labels, legends, etc.
 set(groot, 'defaultAxesTickLabelInterpreter', 'latex');
