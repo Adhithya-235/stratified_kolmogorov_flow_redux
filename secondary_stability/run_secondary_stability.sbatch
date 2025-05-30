@@ -11,7 +11,7 @@
 #SBATCH --mail-user=as1751@usnh.edu
 
 module purge
-module load matlab
+module load MATLAB
 
 cd /mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/secondary_stability
 
@@ -48,7 +48,7 @@ ECSFILE=${ECSFILES[$SLURM_PROCID]}
 REB=$(basename "$ECSFILE" | sed -E 's/[^0-9]*([0-9]+)\.mat/\1/')
 
 # Call MATLAB with all values passed into the workspace
-matlab -batch "clear; close all; clc; Reb=$REB; Pr=$PR; Fr=$FR; alpha=$ALPHA; beta=$BETA; numEig=$NUMEIG; residualtol=$TOL; maxit=$MAXIT; outputflag=$VERBOSE; test_ecs"
+matlab -batch "clear; close all; clc; Reb=$REB; Pr=$PR; Fr=$FR; alpha=$ALPHA; beta=$BETA; numEig=$NUMEIG; residualtol=$TOL; maxit=$MAXIT; outputflag=$VERBOSE; ecs_stability"
 
 # Move SLURM logs into the corresponding output directory
 SOLUTION_DIR=solutions/Reb${REB}_alpha${ALPHA}
