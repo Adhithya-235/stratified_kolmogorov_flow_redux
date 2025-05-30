@@ -1,14 +1,14 @@
 #!/bin/bash
 #
 #SBATCH --job-name=secstab
-#SBATCH --nodes=1
-#SBATCH --ntasks=20
-#SBATCH --cpus-per-task=1
-#SBATCH --time=72:00:00
 #SBATCH --output=slurm_logs/secstab_%A_%a.out
 #SBATCH --error=slurm_logs/secstab_%A_%a.err
-#SBATCH --mail-type=ALL
 #SBATCH --mail-user=as1751@usnh.edu
+#SBATCH --mail-type=ALL
+#SBATCH --ntasks-per-node=20
+#SBATCH --cpus-per-task=1
+#SBATCH --nodes=1
+#SBATCH --time=72:00:00
 
 module purge
 module load MATLAB
