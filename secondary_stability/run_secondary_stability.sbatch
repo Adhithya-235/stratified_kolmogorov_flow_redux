@@ -1,16 +1,14 @@
 #!/bin/bash
 #
 #SBATCH --job-name=secstab
-#SBATCH --partition=standard
 #SBATCH --nodes=1
 #SBATCH --ntasks=20
 #SBATCH --cpus-per-task=1
-#SBATCH --time=08:00:00
-#SBATCH --mem=64G
+#SBATCH --time=72:00:00
 #SBATCH --output=slurm_logs/secstab_%A_%a.out
 #SBATCH --error=slurm_logs/secstab_%A_%a.err
-#SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=as1751@university.edu
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=as1751@usnh.edu
 
 module purge
 module load matlab
@@ -26,8 +24,8 @@ PR=1
 FR=0.01
 BETA=0
 NUMEIG=30
-TOL=1e-6
-MAXIT=2000
+TOL=1e-12
+MAXIT=50000
 VERBOSE=1
 
 # Build a filtered list of ECS files that have not already been processed
