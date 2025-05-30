@@ -1,25 +1,33 @@
-clear
-close all
-clc
+% ecs_stability.m
+%
+% This script performs secondary stability analysis on a given ECS for
+% specified parameters. It expects the following variables to be defined
+% in the MATLAB workspace prior to execution:
+%
+%   Reb         - Buoyancy Reynolds number
+%   Pr          - Prandtl number
+%   Fr          - Froude number
+%   alpha       - Floquet exponent in x
+%   beta        - Floquet exponent in z
+%   numEig      - Number of eigenvalues to compute
+%   residualtol - Arnoldi residual tolerance
+%   maxit       - Maximum Arnoldi iterations
+%   outputflag  - Verbosity flag (1 = verbose)
+%
+% Note: This script assumes that the commands `clear`, `close all`, and `clc`
+% have already been issued in the MATLAB command sent via `-batch`.
+%
+% This script is designed to be called from the shell using:
+%   matlab -batch "clear; close all; clc; Reb=12; Pr=1; Fr=0.01; alpha=0.5; beta=0; numEig=30; residualtol=1e-6; maxit=2000; outputflag=1; ecs_stability"
 
-%% DIARY
+%% CHECK FOR REQUIRED INPUTS
 
-diary('logfile001.txt')
-
-%% PHYSICAL PARAMETERS
-
-Reb   = 12;                  % Buoyancy Reynolds
-Pr    = 1;                  % Prandtl
-Fr    = 0.01;               % Froude
-alpha = 0.5;                % x Floquet Modifier
-beta  = 0;                  % z Floquet Modifier
-
-%% EIG PARAMETERS
-
-numEig      = 30;
-residualtol = 1e-6;
-maxit       = 2000;
-outputflag  = 1;
+required_vars = {'Reb','Pr','Fr','alpha','beta','numEig','residualtol','maxit','outputflag'};
+for k = 1:length(required_vars)
+    if ~exist(required_vars{k}, 'var')
+        error('Missing required variable: %s', required_vars{k});
+    end
+end
 
 %% SAVE FOLDER
 
