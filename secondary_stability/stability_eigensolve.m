@@ -30,8 +30,8 @@ type       = 'largestreal';
 opts.tol   = residualtol;
 opts.maxit = maxit;
 opts.disp  = outputflag;
-opts.p     = 2*numEig + 1;
-opts.v0    = construct_StartVector(Nx, Nz); 
+opts.p     = 3*numEig + 1;
+% opts.v0    = construct_StartVector(Nx, Nz); 
 opts.fail  = 'keep';
 
 %% EIGENVALUE SOLVE

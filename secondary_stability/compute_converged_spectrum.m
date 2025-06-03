@@ -13,18 +13,19 @@ end
 %% INITIALIZE
 
 relErr     = Inf;
+vecErr     = Inf;
 scale      = initialRescale;
 prevEig    = NaN;
 outputflag = 1;  % Verbose mode
 
 %% MAIN LOOP
 
-while relErr > targetRelErr
+while (relErr > targetRelErr) || (vecErr > 1e-14)
     
     %% CHECK RESOLUTION CAP AND BREAK LOOP IF EXCEEDED
     
-    if exist('meta','var') && any(meta.resolution > 512)
-        warning("Maximum allowed grid size (512 x 512) exceeded. Terminating refinement.");
+    if exist('meta','var') && any(meta.resolution >= 1024)
+        warning("Maximum allowed grid size (1024 x 1024) exceeded. Terminating refinement.");
         break;
     end
 
@@ -58,7 +59,6 @@ while relErr > targetRelErr
             
             if vecErr < 1e-14
                 fprintf("✅ Eigenvector and eigenvalue convergence satisfied.\n");
-                break;
             else
                 warning("Eigenvectors are not parallel to machine precision — refining further.");
             end
@@ -76,6 +76,6 @@ while relErr > targetRelErr
 
 end
 
-fprintf("Grid-independent spectrum found at scale: %.2f\n", scale);
+fprintf("Grid-independent spectrum found at scale: %.2f\n", scale/2);
 
 end

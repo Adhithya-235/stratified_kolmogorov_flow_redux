@@ -62,7 +62,7 @@ srun \
 
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
-    matlab -singleCompThread -batch "clear; close all; clc; Reb=${REB_VAL}; Pr=1; Fr=0.01; alpha=${ALPHA_VAL}; beta=0; numEig=30; residualtol=1e-6; maxit=2000; outputflag=1; ecs_stability;"
+    matlab -singleCompThread -batch "clear; close all; clc; Reb=${REB_VAL}; Pr=1; Fr=0.01; alpha=${ALPHA_VAL}; beta=0; numEig=25; residualtol=1e-12; maxit=10000; outputflag=1; ecs_stability;"
 
   fi
 
