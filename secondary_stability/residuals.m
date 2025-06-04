@@ -1,4 +1,4 @@
-function T = compute_residual(eigvals, eigvecs, Afun)
+function T = residuals(eigvals, eigvecs, Afun)
 %COMPUTE_EIGEN_RESIDUALS Compute residual norms for a set of eigenpairs
 %
 %   T = compute_eigen_residuals(eigvals, eigvecs, Afun)
