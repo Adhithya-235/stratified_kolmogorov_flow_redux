@@ -22,3 +22,6 @@ linear_stability/*.fig
 !slanCM_Data.mat
 *.h5
 ?/
+*.pdf
+*.out
+*.err

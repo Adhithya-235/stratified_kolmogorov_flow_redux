@@ -56,7 +56,7 @@ args = docopt(__doc__)
 ReynoldsB    = float(args['--Rb'])                                                             # Buoyancy Reynolds Number
 Prandtl      = float(args['--Pr'])                                                             # Prandtl Number
 Froude       = float(args['--Fr'])                                                             # Froude Number
-Lx, Lz       = (Froude*6.0*np.pi/0.34, 4.0*np.pi/3.0)                                          # Box Size
+Lx, Lz       = (0.03, 2.0*np.pi/3.0)                                          # Box Size
 Nx, Nz       = (int(args['--Nx']), int(args['--Nz']))                                          # No. of Gridpoints
 stop_time    = float(args['--Tend'])                                                           # Sim. stop time
 
@@ -67,7 +67,7 @@ if MPI.COMM_WORLD.rank == 0:
 
 # CREATE RESULTS FOLDER
 
-path = 'results_branch1/'
+path = 'results_ecs/'
 if MPI.COMM_WORLD.rank == 0:
     if not os.path.exists(path):
         os.mkdir(path)    
@@ -76,7 +76,7 @@ if MPI.COMM_WORLD.rank == 0:
 
 x_basis = de.Fourier("x", Nx, interval=(0, Lx), dealias=3/2)
 z_basis = de.Fourier("z", Nz, interval=(0, Lz), dealias=3/2)
-domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[16,1])
+domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[4,1])
 x, z    = domain.grids(scales=1)
 
 # FORCING TERM
@@ -85,7 +85,7 @@ def perforce(*args):
     z = args[0].data
     m = 3.0
     R = ReynoldsB
-    return 1.0*((m*m*m)/R)*np.cos(m*z)
+    return -1.0*((m*m*m)/R)*np.sin(m*z)
 
 def Forcing(*args, domain=domain, F=perforce):
     return de.operators.GeneralFunction(domain, layout='g', func=F, args=args)
@@ -157,7 +157,7 @@ if not pathlib.Path('restart.h5').exists():
 
     # GET EIGENFUNCTIONS FROM FILE
 
-    eigenfuncs = h5py.File('initialize_branch1.h5','r')
+    eigenfuncs = h5py.File('initialize_ecs.h5','r')
 
     # BACKGROUND CONFIGURATIONS + EIGENFUNCTIONS
     
@@ -218,6 +218,7 @@ try:
     while solver.proceed:
         
         timestep = CFL.compute_dt()
+        # timestep = dt
         solver.step(timestep)
         if (solver.iteration-1) % 100 == 0:
             logger.info('Iteration: %i, Time: %e, dt: %e, max(w): %e, VTE: %e' %(solver.iteration, solver.sim_time, timestep, flow.max('w2'), flow.max('VTE')))     
