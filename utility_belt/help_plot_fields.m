@@ -8,7 +8,7 @@ hold off
 pcolor(X,Z,PHI)  
 caxis manual
 caxis(clim)
-colormap(slanCM('seismic'))
+colormap(slanCM('magma'))
 shading interp
 c1 = colorbar;
 xlabel('$x$', 'interpreter', 'latex')
@@ -24,6 +24,6 @@ set(gca, 'fontsize', 30)
 axis tight
 box on
 set(gca, 'boxstyle', 'full', 'linewidth', 4)
-daspect([2 1 1])
+daspect([1 1 1])
 
 end

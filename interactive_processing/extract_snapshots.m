@@ -8,23 +8,23 @@ addpath('../utility_belt');
 
 %% FILE PARAMETERS
 
-folder_name = '2024-10-02_13-49-55'; 
-data_folder = 'results_branch4'; 
+folder_name = '2025-06-10_15-19-27'; 
+data_folder = 'results_ecs'; 
 file_name   = 'field_snapshots'; 
 stride      = 1; 
-svec        = 9; 
+svec        = 20; 
 wrap        = 0; 
 unwrap      = 0; 
 
 %% SIMULATION PARAMETERS
 
-Fr = 0.02;
-Rb = 50;
+Fr = 0.01;
+Rb = 10;
 Pr = 1;
-Lx = 1;
-Lz = 4*pi/3;
-Nx = 1024;
-Nz = 1024;
+Lx = 0.03;
+Lz = 2*pi/3;
+Nx = 128;
+Nz = 128;
 dx = Lx/Nx;
 dz = Lz/Nz;
 
@@ -35,7 +35,7 @@ dz = Lz/Nz;
 
 %%  SELECT VORTICITY SLICE
 
-tindex    = find(abs(t-8.43)<1e-3);
+tindex    = find(abs(t-19.99)<1e-3);
 vortslice = vort(:, :, tindex);
 bslice    = b(:, :, tindex);
 
@@ -44,7 +44,7 @@ bslice    = b(:, :, tindex);
 f = figure;
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96])
 subplot(211)
-clim = [0, 4*pi/3];
+clim = [0, 2*pi/3];
 help_plot_fields(X/Fr,Z,z+bslice,clim,[],t(tindex))
 title('Buoyancy','interpreter','latex')
 subplot(212)
@@ -55,4 +55,4 @@ saveas(f, 'initialguesssnapshot.png')
 
 %% SAVE DATA
 
-save('initial_guess_adhi',"vortslice","bslice", "x","z","Rb","Fr","Pr","Lx","Lz","Nx","Nz","dx","dz");
+% save('initial_guess_adhi',"vortslice","bslice", "x","z","Rb","Fr","Pr","Lx","Lz","Nx","Nz","dx","dz");

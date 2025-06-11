@@ -15,7 +15,7 @@ cmap = slanCM('magma');
 
 %% PARAMETERS
 
-Reb     = 10;
+Reb     = 13;
 Fr      = 0.01;
 alpha   = 0;
 beta    = 0;
@@ -103,7 +103,7 @@ exportgraphics(init, 'init.pdf', 'ContentType', 'vector', 'Resolution', 500);
 
 %% SAVE AS HDF5
 
-H5FileName = "initialize_ecs.h5";
+H5FileName = sprintf('initialize_ecs_Reb%.2f_alpha%.2f.h5',Reb,alpha);
 datasets   = ["/zeta", "/psi", "/b"];
 variables  = {Xi_in, Psi_in, B_in};
 
