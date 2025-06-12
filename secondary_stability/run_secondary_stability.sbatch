@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=secstab
 #SBATCH --nodes=1
-#SBATCH --ntasks=20
+#SBATCH --ntasks=28
 #SBATCH --cpus-per-task=1
-#SBATCH --time=72:00:00
+#SBATCH --time=120:00:00
 #SBATCH --chdir=/mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/secondary_stability
 #SBATCH --mail-user=as1751@usnh.edu
 #SBATCH --mail-type=ALL
@@ -26,7 +26,7 @@ if [[ ${#ECSFILES[@]} -ne $SLURM_NTASKS ]]; then
   exit 1
 fi
 
-# 4) Launch 20 parallel tasks, one per core
+# 4) Launch NTASKS parallel tasks, one per core
 
 srun \
  --ntasks=$SLURM_NTASKS \
@@ -62,7 +62,7 @@ srun \
 
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
-    matlab -singleCompThread -batch "clear; close all; clc; Reb=${REB_VAL}; Pr=1; Fr=0.01; alpha=${ALPHA_VAL}; beta=0; numEig=25; residualtol=1e-12; maxit=10000; outputflag=1; ecs_stability;"
+    matlab -singleCompThread -batch "clear; close all; clc; Reb=${REB_VAL}; Pr=1; Fr=0.01; alpha=${ALPHA_VAL}; beta=0; numEig=30; residualtol=1e-12; maxit=10000; outputflag=1; ecs_stability;"
 
   fi
 
