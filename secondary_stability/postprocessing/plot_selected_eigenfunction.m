@@ -46,7 +46,7 @@ if isempty(scriptDir)
     scriptDir = pwd; 
     fprintf('Assuming script is running from: %s (postprocessing folder)\n', scriptDir);
 end
-solutionsParentDir = fullfile(scriptDir, '..', 'secondary_stability_solutions_maxit10000');
+solutionsParentDir = fullfile(scriptDir, '..', 'solutions_branch_1_Pr_1');
 parentDir = fullfile(scriptDir, '..'); 
 
 Reb_str_fs = sprintf('%.2f', Reb_val);       

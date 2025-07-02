@@ -15,15 +15,15 @@ cmap = slanCM('magma');
 
 %% PARAMETERS
 
-Reb     = 100;
+Reb     = 3;
 Fr      = 0.01;
 alpha   = 0;
 beta    = 0;
-efn_idx = 6;
+efn_idx = 4;
 
 %% FILEPATH CONFIG - EIGENFUNCTION
 
-ParentFolder = sprintf('../secondary_stability_solutions_maxit10000');
+ParentFolder = sprintf('../solutions_branch_1_Pr_1');
 SolnFolder   = sprintf('Reb%.2f_alpha%.2f',Reb,alpha);
 SolnFile     = sprintf('spectrum_Reb%.2f_alpha%.2f',Reb,alpha);
 FilePath     = sprintf('%s/%s/%s',ParentFolder,SolnFolder,SolnFile);
@@ -59,5 +59,5 @@ xp   = (0:(Nx-1))*(Lxp/Nx);
 zp   = (0:(Nz-1))*(Lzp/Nx);
 efns = figure('WindowState', 'maximized', 'Color', 'w');
 help_plot_3_fields(xp/Fr, zp, Xip, Bp, Psip, '$\xi^\prime$', '$b^\prime$', '$\psi^\prime$', cmap, fs, lw)
-plotname = sprintf('Eigenfunctions_Reb%.2f_alpha%.2f_index%d.pdf',Reb,alpha,efn_idx);
+plotname = sprintf('Eigenfunctions_Reb%.2f_alpha%.2f_index%d.png',Reb,alpha,efn_idx);
 exportgraphics(efns, plotname, 'ContentType', 'vector', 'Resolution', 500);

@@ -14,7 +14,7 @@ lw   = 3;
 
 %% PARAMETERS
 
-Reb     = [10, 11, 12, 13, 15, 20, 30, 50, 55, 60, 85, 90, 100];
+Reb     = [1:20, 30:10:100];
 Fr      = 0.01;
 alpha   = 0;
 beta    = 0;
@@ -23,7 +23,7 @@ beta    = 0;
 
 SolnFilePath = cell(length(Reb),1);
 for fileidx = 1:length(Reb)
-    ParentDir             = sprintf('../secondary_stability_solutions_maxit10000');
+    ParentDir             = sprintf('../solutions_branch_1_Pr_1');
     subDir                = sprintf('Reb%.2f_alpha%.2f',Reb(fileidx), alpha);
     SolnFile              = sprintf('spectrum_Reb%.2f_alpha%.2f.mat',Reb(fileidx), alpha);
     SolnFilePath{fileidx} = sprintf('%s/%s/%s',ParentDir,subDir,SolnFile);
@@ -38,7 +38,7 @@ tracked_idx  = NaN(nReb, 1);
 %% GET TARGET MODE
 
 target          = load(SolnFilePath{1});
-ref_idx         = 1;
+ref_idx         = 4;
 eigval_prev     = target.eigvals(ref_idx);
 eigvec_prev     = target.eigvecs(:, ref_idx);
 
@@ -108,9 +108,9 @@ xlim([1, Reb(end)])
 axis square
 grid on
 box on
-set(gca, 'linewidth', lw, 'fontsize', fs, 'XScale', 'linear', 'YScale', 'linear', 'ticklabelinterpreter', 'latex', 'GridLineStyle', ':')
+set(gca, 'linewidth', lw, 'fontsize', fs, 'XScale', 'log', 'YScale', 'linear', 'ticklabelinterpreter', 'latex', 'GridLineStyle', ':')
 drawnow
-plotname = sprintf('StationaryInstabGrowth.pdf');
+plotname = sprintf('StationaryInstabGrowth.png');
 exportgraphics(trackedevals, plotname, 'ContentType', 'vector', 'Resolution', 500);
 
 %% EIGENVECTOR PADDING FUNCTION

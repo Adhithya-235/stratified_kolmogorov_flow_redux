@@ -33,9 +33,9 @@ if isempty(scriptDir)
     scriptDir = pwd; 
     fprintf('Assuming script is running from: %s (postprocessing folder)\n', scriptDir);
 end
-solutionsParentDir = fullfile(scriptDir, '..', 'secondary_stability_solutions_maxit10000');
+solutionsParentDir = fullfile(scriptDir, '..', 'solutions_branch_1_Pr_1');
 outputExcelDir = scriptDir; % Save .xlsx file in the current (postprocessing) folder
-outputExcelFileName = 'All_Reb_Eigenvalue_Summary.xlsx';
+outputExcelFileName = 'All_Reb_Eigenvalue_Summary_alpha0.00.xlsx';
 excelFullFilePath = fullfile(outputExcelDir, outputExcelFileName);
 
 

@@ -24,8 +24,8 @@ while (relErr > targetRelErr) || (vecErr > 1e-14)
     
     %% CHECK RESOLUTION CAP AND BREAK LOOP IF EXCEEDED
     
-    if exist('meta','var') && any(meta.resolution >= 1024)
-        warning("Maximum allowed grid size (1024 x 1024) exceeded. Terminating refinement.");
+    if exist('meta','var') && any(meta.resolution >= 512)
+        warning("Maximum allowed grid size (512 x 512) exceeded. Terminating refinement.");
         break;
     end
 
@@ -57,7 +57,7 @@ while (relErr > targetRelErr) || (vecErr > 1e-14)
             
             %% ITERATION RESULT LOGGING 
             
-            if vecErr < 1e-14
+            if vecErr < 1e-12
                 fprintf("✅ Eigenvector and eigenvalue convergence satisfied.\n");
             else
                 warning("Eigenvectors are not parallel to machine precision — refining further.");
