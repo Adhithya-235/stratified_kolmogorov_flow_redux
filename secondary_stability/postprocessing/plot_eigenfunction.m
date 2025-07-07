@@ -15,11 +15,11 @@ cmap = slanCM('magma');
 
 %% PARAMETERS
 
-Reb     = 3;
+Reb     = 4;
 Fr      = 0.01;
 alpha   = 0;
 beta    = 0;
-efn_idx = 4;
+efn_idx = 1;
 
 %% FILEPATH CONFIG - EIGENFUNCTION
 

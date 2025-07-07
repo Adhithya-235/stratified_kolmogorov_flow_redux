@@ -15,7 +15,7 @@ cmap = slanCM('magma');
 
 %% PARAMETERS
 
-Reb     = 13;
+Reb     = 100;
 Fr      = 0.01;
 alpha   = 0;
 beta    = 0;
@@ -23,30 +23,22 @@ efn_idx = 1;
 
 %% FILEPATH CONFIG - EIGENFUNCTION
 
-ParentFolder = sprintf('../secondary_stability_solutions_maxit10000');
+ParentFolder = sprintf('../solutions_branch_1_Pr_1');
 SolnFolder   = sprintf('Reb%.2f_alpha%.2f',Reb,alpha);
-SolnFile     = sprintf('converged_Reb%dp00_alpha%dp00.mat',Reb,alpha);
-VarName      = sprintf('converged_Reb%dp00_alpha%dp00',Reb,alpha);
+SolnFile     = sprintf('spectrum_Reb%.2f_alpha%.2f.mat',Reb,alpha);
 FilePath     = sprintf('%s/%s/%s',ParentFolder,SolnFolder,SolnFile);
 
 %% LOAD REQUIRED EIGENSOLUTIONS DATA
 
-eigenSoln = load(FilePath);
-dataStruct = eigenSoln.(VarName);
+dataStruct = load(FilePath);
 
 %% GRAB EIGENVECTOR AND OTHER DATA
 
-V  = dataStruct.converged_eigenvectors;
-Nx = dataStruct.original_resolution(1);
-Nz = dataStruct.original_resolution(2);
-Lx = dataStruct.original_domainsize(1); 
-Lz = dataStruct.original_domainsize(2); 
-scale_factor = alpha;
-if abs(scale_factor) == 0
-    scale_factor = 1.0;
-end
-Lxp = Lx * scale_factor;
-Lzp = Lz; 
+V   = dataStruct.eigvecs;
+Nx  = dataStruct.meta.resolution(1);
+Nz  = dataStruct.meta.resolution(2);
+Lxp = dataStruct.meta.domainsize(1); 
+Lzp = dataStruct.meta.domainsize(2); 
 kx  = (2*pi/Lxp) * [0:(Nx/2-1), (-Nx/2):-1];
 kz  = (2*pi/Lzp) * [0:(Nz/2-1), (-Nz/2):-1];
 
@@ -58,8 +50,8 @@ kz  = (2*pi/Lzp) * [0:(Nz/2-1), (-Nz/2):-1];
 
 %% INTERPOLATE FIELDS
 
-Nx   = 128;
-Nz   = 128;
+Nx   = 256;
+Nz   = 256;
 
 Xip  = interpft(interpft(Xip, Nz, 1), Nx, 2);
 Psip = interpft(interpft(Psip, Nz, 1), Nx, 2);
@@ -84,8 +76,8 @@ Psi_in = Psi + Psip;
 
 %% PLOTTING BLOCK -- OPTIONAL, ONLY FOR DEBUGGINH
 
-x    = (0:(Nx-1))*(Lx/Nx);
-z    = (0:(Nz-1))*(Lz/Nx);
+x    = (0:(Nx-1))*(Lxp/Nx);
+z    = (0:(Nz-1))*(Lzp/Nx);
 xp   = (0:(Nx-1))*(Lxp/Nx);
 zp   = (0:(Nz-1))*(Lzp/Nx);
 
@@ -103,7 +95,7 @@ exportgraphics(init, 'init.pdf', 'ContentType', 'vector', 'Resolution', 500);
 
 %% SAVE AS HDF5
 
-H5FileName = sprintf('initialize_ecs_Reb%.2f_alpha%.2f.h5',Reb,alpha);
+H5FileName = sprintf('initialize_ecs_Reb%.2f_alpha%.2f_idx%d.h5',Reb,alpha,efn_idx);
 datasets   = ["/zeta", "/psi", "/b"];
 variables  = {Xi_in, Psi_in, B_in};
 
