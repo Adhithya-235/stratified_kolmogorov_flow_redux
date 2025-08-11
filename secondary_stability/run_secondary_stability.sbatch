@@ -42,7 +42,7 @@ srun \
   echo "[$SLURM_PROCID] Processing file: $FILE" >&2
   REB_VAL=$(basename "$FILE" | sed -E "s/[^0-9]*([0-9]+)\.mat/\1/")
   echo "[$SLURM_PROCID] Parsed Reb = $REB_VAL" >&2
-  ALPHA_VAL=0
+  ALPHA_VAL=0.33
 
   # b) Format names exactly as the MATLAB script does
 

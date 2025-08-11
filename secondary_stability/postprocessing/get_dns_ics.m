@@ -19,7 +19,7 @@ Reb     = 100;
 Fr      = 0.01;
 alpha   = 0;
 beta    = 0;
-efn_idx = 1;
+efn_idx = 6;
 
 %% FILEPATH CONFIG - EIGENFUNCTION
 

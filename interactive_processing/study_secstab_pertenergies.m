@@ -8,23 +8,23 @@ addpath('../utility_belt');
 
 %% DNS FILE PARAMETERS
 
-folder_name = '2025-06-11_08-39-59'; 
-data_folder = 'results_ecs'; 
+folder_name = '2025-07-10_12-05-22'; 
+data_folder = 'results2_ecs100'; 
 file_name   = 'field_snapshots'; 
 stride      = 1; 
-svec        = 1:50; 
+svec        = 1:4; 
 wrap        = 0; 
 unwrap      = 0; 
 
 %% DNS SIMULATION PARAMETERS
 
 Fr = 0.01;
-Rb = 13;
+Rb = 100;
 Pr = 1;
 Lx = 0.03;
 Lz = 2*pi/3;
-Nx = 128;
-Nz = 128;
+Nx = 256;
+Nz = 256;
 dx = Lx/Nx;
 dz = Lz/Nz;
 
@@ -41,7 +41,9 @@ ecsPath   = sprintf('%s/%s',ecsFolder,ecsFile);
 
 %% READ ECS DATA
 
-ecs = load(ecsPath);
+ecs          = load(ecsPath);
+ecs.omega    = interpft(interpft(ecs.omega, Nz, 1), Nx, 2);
+ecs.Buoyancy = interpft(interpft(ecs.Buoyancy, Nz, 1), Nx, 2); 
 
 %% CALCULATE PERTURBATIONS AND PERTURBATION ENERGIES
 
@@ -69,8 +71,8 @@ disp('Ending volume average.')
 
 %% CHECK AGAINST LINEAR GROWTH RATE
 
-tlin1 = 0:0.005:3;
-grcv1 = (4e-5)*exp(2*1.29*tlin1);
+tlin1 = 0:0.005:2;
+grcv1 = (5e-6)*exp(2*2.17*tlin1);
 
 %% PLOT TIMESERIES
 
@@ -80,7 +82,6 @@ hold on
 plot(t, genstr, '-o', 'linewidth', 3)
 plot(t, gpoten, '-o', 'linewidth', 3)
 plot(tlin1, grcv1, 'ko', 'linewidth', 3)
-% plot(tlin2, grcv2, 'mo', 'linewidth', 3)
 xlabel('$t$', 'interpreter', 'latex')
 ylabel('Pert Energy', 'interpreter', 'latex')
 legend('Enstrophy','PE', 'SSGR', 'interpreter', 'latex')

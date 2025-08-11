@@ -49,13 +49,13 @@ if isempty(scriptDir)
     fprintf('Assuming script is running from: %s\n', scriptDir);
 end
 % Solutions directory is now a subdirectory of the script's directory
-baseSolutionsDir = fullfile(scriptDir, 'solutions_branch_1_Pr_1');
+baseSolutionsDir = fullfile(scriptDir, 'solutions');
 
 % --- Get list of subdirectories ---
 if ~isfolder(baseSolutionsDir)
     error(['Base solutions directory not found: %s\n' ...
            'Please ensure this script is in the parent directory of ' ...
-           '''solutions_branch_1_Pr_1''.'], baseSolutionsDir);
+           '''solutions''.'], baseSolutionsDir);
 end
 
 listing = dir(baseSolutionsDir);

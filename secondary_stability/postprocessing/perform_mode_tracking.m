@@ -18,10 +18,11 @@ Reb            = [1:20, 30:10:100];
 Fr             = 0.01;
 alpha          = 0;
 beta           = 0;
-Reb_start      = 18;
-ref_idx        = 1;
-overlap_thresh = 0.5;
-output_file    = 'oscillatory_mode_1_data.mat';
+Reb_start      = 30;
+ref_idx        = 7;
+overlap_thresh = 0.56;
+w_omega        = 1;
+output_file    = 'oscillatory_mode_3_data';
 
 %% GET FILE NAMES
 
@@ -72,24 +73,30 @@ if start_idx < nReb
     Nx_coarse    = data0.meta.resolution(1);
     Nz_coarse    = data0.meta.resolution(2);
     eigvec_prev  = tracked_vecs{start_idx};
+    eigval_prev  = tracked_eigs(start_idx);
 
     for idx = start_idx+1:nReb
     
-        [eigval_prev, eigvec_prev, Nx_coarse, Nz_coarse, best_idx, overlap] = ...
-            track_one_step(SolnFilePath{idx}, eigvec_prev, Nx_coarse, Nz_coarse);
+        [cand_val, cand_vec, Nx_fine, Nz_fine, best_idx, overlap, dom] = ...
+            track_one_step(SolnFilePath{idx}, eigvec_prev, eigval_prev, Nx_coarse, Nz_coarse, w_omega);
 
-        if overlap < overlap_thresh
-            fprintf('Reb=%.2f: overlap %.3f < %.2f → discarded\n', Reb(idx), overlap, overlap_thresh);
-            continue
+        if real(eigval_prev) > 0
+            eigval_prev   = cand_val;     % <-- update only on accept
+            eigvec_prev   = cand_vec;
+            Nx_coarse     = Nx_fine;
+            Nz_coarse     = Nz_fine;
+            tracked_eigs(idx) = cand_val;
+            tracked_idx(idx)  = best_idx;
+            tracked_vecs{idx} = cand_vec;
+            
+            fprintf(['Reb = %.2f  |  σ = %.4f%+.4fi  |  ' ...
+                 'ovlp = %.3f  |  |Δσ| = %.3f\n'], ...
+                 Reb(idx), real(cand_val), imag(cand_val), overlap, dom);
+        elseif overlap < overlap_thresh
+            fprintf('Reb=%.2f: overlap %.3f < %.2f → discarded\n', Reb(idx), ...
+                    overlap, overlap_thresh);
         end
 
-        tracked_eigs(idx)  = eigval_prev;
-        tracked_idx(idx)   = best_idx;
-        tracked_vecs{idx}  = eigvec_prev;
-
-        fprintf('Match at Reb = %.2f | σ = %.4f | overlap = %.3f\n', ...
-            Reb(idx), eigval_prev, overlap);
-    
     end
 
 end
@@ -103,23 +110,29 @@ if start_idx > 1
     Nx_coarse    = data0.meta.resolution(1);
     Nz_coarse    = data0.meta.resolution(2);
     eigvec_prev  = tracked_vecs{start_idx};
-
+    eigval_prev  = tracked_eigs(start_idx);
+    
     for idx = start_idx-1:-1:1
         
-        [eigval_prev, eigvec_prev, Nx_coarse, Nz_coarse, best_idx, overlap] = ...
-            track_one_step(SolnFilePath{idx}, eigvec_prev, Nx_coarse, Nz_coarse);
+        [cand_val, cand_vec, Nx_fine, Nz_fine, best_idx, overlap, dom] = ...
+            track_one_step(SolnFilePath{idx}, eigvec_prev, eigval_prev, Nx_coarse, Nz_coarse, w_omega);
 
-        if overlap < overlap_thresh
-            fprintf('Reb=%.2f: overlap %.3f < %.2f → discarded\n', Reb(idx), overlap, overlap_thresh);
-            continue
+        if real(eigval_prev) > 0
+            eigval_prev   = cand_val;     % <-- update only on accept
+            eigvec_prev   = cand_vec;
+            Nx_coarse     = Nx_fine;
+            Nz_coarse     = Nz_fine;
+            tracked_eigs(idx) = cand_val;
+            tracked_idx(idx)  = best_idx;
+            tracked_vecs{idx} = cand_vec;
+            
+            fprintf(['Reb = %.2f  |  σ = %.4f%+.4fi  |  ' ...
+                'ovlp = %.3f  |  |Δσ| = %.3f\n'], ...
+                Reb(idx), real(cand_val), imag(cand_val), overlap, dom);
+        elseif overlap < overlap_thresh
+            fprintf('Reb=%.2f: overlap %.3f < %.2f → discarded\n', Reb(idx), ...
+                    overlap, overlap_thresh);
         end
-
-        tracked_eigs(idx)  = eigval_prev;
-        tracked_idx(idx)   = best_idx;
-        tracked_vecs{idx}  = eigvec_prev;
-
-        fprintf('Match at Reb = %.2f | σ = %.4f | overlap = %.3f\n', ...
-            Reb(idx), eigval_prev, overlap);
 
     end
 
@@ -142,7 +155,7 @@ grid on
 box on
 set(gca, 'linewidth', lw, 'fontsize', fs, 'XScale', 'log', 'YScale', 'linear', 'ticklabelinterpreter', 'latex', 'GridLineStyle', ':')
 drawnow
-plotname = sprintf('Oscillatory1InstabGrowth.png');
+plotname = sprintf('OscillatoryInstab3Growth.png');
 exportgraphics(trackedevals, plotname, 'ContentType', 'vector', 'Resolution', 500);
 
 %% SAVE TRACKED DATA
@@ -166,14 +179,14 @@ function v_interp = pad_coarse_evec(v_coarse, Nx_coarse, Nz_coarse, Nx_fine, Nz_
 
     % Stack and normalize
     v_interp = [xi_interp(:); b_interp(:)];
-    v_interp = v_interp / norm(v_interp);
+    % v_interp = v_interp / norm(v_interp);
 
 end
 
 %% TRACK ONE STEP FUNCTION
 
-function [eigval_new, eigvec_new, Nx_fine, Nz_fine, best_idx, overlap] = ...
-    track_one_step(file_path, v_ref, Nx_coarse, Nz_coarse)
+function [eigval_new, eigvec_new, Nx_fine, Nz_fine, best_idx, boverlap, bdomega] = ...
+    track_one_step(file_path, v_ref, eigval_prev, Nx_coarse, Nz_coarse, w_omega)
 
     data     = load(file_path);
     sigma    = data.eigvals;
@@ -185,11 +198,16 @@ function [eigval_new, eigvec_new, Nx_fine, Nz_fine, best_idx, overlap] = ...
         v_ref = pad_coarse_evec(v_ref, Nx_coarse, Nz_coarse, Nx_fine, Nz_fine);
     end
 
-    overlaps     = abs(V' * v_ref);
-    invalid = imag(sigma) < -1e-5;
-    overlaps(invalid) = -Inf;
-    [overlap, best_idx] = max(overlaps);
-    eigval_new   = sigma(best_idx);
-    eigvec_new   = V(:, best_idx);
+    overlaps            = abs(V' * v_ref);
+    domega              = abs(sigma-eigval_prev);
+    dscale              = max(domega) + eps;
+    invalid             = imag(sigma) < -1e-5;
+    overlaps(invalid)   = -Inf;
+    score               = overlaps - w_omega*(domega./dscale);
+    [~, best_idx]       = max(score);
+    eigval_new          = sigma(best_idx);
+    eigvec_new          = V(:, best_idx);
+    boverlap            = overlaps(best_idx);
+    bdomega             = domega(best_idx);
 
 end
