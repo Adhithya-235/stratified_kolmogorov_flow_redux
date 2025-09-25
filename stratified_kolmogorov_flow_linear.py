@@ -67,7 +67,7 @@ if MPI.COMM_WORLD.rank == 0:
 
 # CREATE RESULTS FOLDER
 
-path = 'results2_ecs100/'
+path = 'results_linear/'
 if MPI.COMM_WORLD.rank == 0:
     if not os.path.exists(path):
         os.mkdir(path)    
@@ -79,22 +79,20 @@ z_basis = de.Fourier("z", Nz, interval=(0, Lz), dealias=3/2)
 domain  = de.Domain([x_basis, z_basis], grid_dtype=np.float64, mesh=[8,1])
 x, z    = domain.grids(scales=1)
 
-# FORCING TERM
-
-def perforce(*args):
-    z = args[0].data
-    m = 3.0
-    R = ReynoldsB
-    return -1.0*((m*m*m)/R)*np.sin(m*z)
-
-def Forcing(*args, domain=domain, F=perforce):
-    return de.operators.GeneralFunction(domain, layout='g', func=F, args=args)
-
-de.operators.parseables['Kolmogorov'] = Forcing
-
 # PROBLEM SETUP
 
 problem = de.IVP(domain, variables=['zeta','psi','b'])
+
+# NON-CONSTANT COEFFICIENTS (BASE STATES)
+
+slices    = domain.dist.grid_layout.slices(scales=1)
+ecs       = h5py.File('basestate_ecs_Reb6.00_alpha0.50_idx1.h5','r')
+nccZ      = domain.new_field(name='ZetaS')
+nccP      = domain.new_field(name='PsiS')
+nccB      = domain.new_field(name='BS')
+nccZ['g'] = ecs.get('zeta')[slices]
+nccP['g'] = ecs.get('psi')[slices]
+nccB['g'] = ecs.get('b')[slices]
 
 # EQUATION ENTRY SUBSTITUTIONS
 
@@ -126,8 +124,8 @@ problem.substitutions['TE']   = 'KE + PE'
 
 # EVOLUTION EQUATIONS 
 
-problem.add_equation("dt(zeta) - (1/Rb)*Lap(zeta) + dx(b) = -J(psi, zeta) + Kolmogorov(z)")
-problem.add_equation("dt(b) - (1/(Pr*Rb))*Lap(b) - dx(psi) = -J(psi, b)")
+problem.add_equation("dt(zeta) - (1/Rb)*Lap(zeta) + dx(b) + J(PsiS, zeta) - J(ZetaS, psi) = 0")
+problem.add_equation("dt(b) - (1/(Pr*Rb))*Lap(b) - dx(psi) + J(PsiS, b) - J(BS, psi) = 0")
 
 # CONSTRAINT EQUATIONS
     
@@ -157,7 +155,7 @@ if not pathlib.Path('restart.h5').exists():
 
     # GET EIGENFUNCTIONS FROM FILE
 
-    eigenfuncs = h5py.File('initialize_ecs_Reb6.00_alpha0.50_idx1.h5','r')
+    eigenfuncs = h5py.File('perturbations_ecs_Reb6.00_alpha0.50_idx1.h5','r')
 
     # BACKGROUND CONFIGURATIONS + EIGENFUNCTIONS
     

@@ -8,25 +8,26 @@ addpath('../utility_belt');
 
 %% FILE PARAMETERS
 
-folder_name = '2025-06-11_08-39-59'; 
-data_folder = 'results_ecs'; 
+folder_name = '2025-08-19_17-48-03'; 
+data_folder = 'results2_ecs100'; 
 file_name   = 'field_snapshots'; 
 stride      = 1; 
-svec        = 1:50; 
+svec        = 1:25; 
 wrap        = 1; 
 unwrap      = 0; 
 
 %% SIMULATION PARAMETERS
 
 Fr = 0.01;
-Rb = 13;
+Rb = 6;
 Pr = 1;
-Lx = 0.03;
+Lx = 2*0.03;
 Lz = 2*pi/3;
 Nx = 128;
 Nz = 128;
 dx = Lx/Nx;
 dz = Lz/Nz;
+alpha = 0.05;
 
 %% READ DATA
 
@@ -88,9 +89,9 @@ ecsPath   = sprintf('%s/%s',ecsFolder,ecsFile);
 %% READ ECS DATA
 
 ecs    = load(ecsPath);
-ecsB   = ecs.Buoyancy;
-ecsV   = ecs.omega;
-ecsPsi = ecs.psi;
+ecsB   = interpft(interpft(repmat(ecs.Buoyancy, 1, 1/alpha), Nz, 1), Nx, 2); 
+ecsV   = interpft(interpft(repmat(ecs.omega, 1, 1/alpha), Nz, 1), Nx, 2);
+ecsPsi = interpft(interpft(repmat(ecs.psi, 1, 1/alpha), Nz, 1), Nx, 2); 
 
 %% COMPUTE u AND w FROM Psi
 

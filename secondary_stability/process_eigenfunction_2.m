@@ -1,4 +1,4 @@
-function [XiT, BT, PsiT] = process_eigenfunction(V, index, Kx, Kz, Fr,...
+function [XiT, BT, PsiT] = process_eigenfunction_2(V, index, Kx, Kz, Fr,...
     alpha, beta, Lx, Lz)
 
 %% SELECT DESIRED VECTOR
@@ -30,11 +30,17 @@ Xi  = ifft2(Xihat2);
 Psi = ifft2(Psihat2);
 B   = ifft2(Bhat2);
 
+%% CONCATENATE
+
+XiC  = cat(2, Xi, Xi);
+PsiC = cat(2, Psi, Psi);
+BC   = cat(2, B, B);
+
 %% COMPUTE x AND z, FLOQUET MULTIPLIER
 
 dx    = Lx/Nx;
 dz    = Lz/Nz;
-x     = 0:dx:Lx-dx;
+x     = 0:dx:(2*Lx)-dx;
 z     = 0:dz:Lz-dz;
 [X,Z] = meshgrid(x,z);
 k     = 2*pi/Lx;
@@ -43,37 +49,14 @@ floqe = exp(1i*(alpha*k*X + beta*l*Z));
 
 %% CONSTRUCT FLOQUET MODIFIED PERTURBATION
 
-XiL  = floqe.*Xi;
-PsiL = floqe.*Psi;
-BL   = floqe.*B;
-
-%% MINIMAL TILE NUMBER
-
-if alpha ~= 0
-    numtiles = 1/alpha;
-else
-    numtiles = 1;
-end
-
-%% CONSTRUCT MINIMAL TILING ON PHYSICAL GRID
-
-tilenum = 2;
-XiT     = XiL;
-PsiT    = PsiL;
-BT      = BL;
-
-while tilenum <= numtiles
-    blochphase = exp(1i*alpha*2*pi*(tilenum-1));
-    XiT        = cat(2, XiT, blochphase*XiL);
-    PsiT       = cat(2, PsiT, blochphase*PsiL);
-    BT         = cat(2, BT, blochphase*BL);
-    tilenum    = tilenum + 1;
-end
+XiL  = floqe.*XiC;
+PsiL = floqe.*PsiC;
+BL   = floqe.*BC;
 
 %% INTERPOLATE TO NATIVE SIZE
 
-XiT  = interpft(interpft(real(XiT), Nz, 1), Nx, 2); 
-PsiT = interpft(interpft(real(PsiT), Nz, 1), Nx, 2); 
-BT   = interpft(interpft(real(BT), Nz, 1), Nx, 2); 
+XiT  = interpft(interpft(real(XiL), Nz, 1), Nx, 2); 
+PsiT = interpft(interpft(real(PsiL), Nz, 1), Nx, 2); 
+BT   = interpft(interpft(real(BL), Nz, 1), Nx, 2); 
 
 end

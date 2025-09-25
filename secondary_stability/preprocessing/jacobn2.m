@@ -1,4 +1,4 @@
-function Jhat = jacobn(qbhat, qhat, Kx, Kz, alpha, beta, Lx, Lz)
+function Jhat = jacobn2(qbhat, qhat, Kx, Kz, alpha, beta, Lx, Lz)
 % Applies the jacobian operator to the unwrapped 2D fields qbhat, qhat 
 % and returns the unwrapped field Jhat. All fields are given in 
 % spectral space. qbhat is a basic state field, alpha and beta 
@@ -11,14 +11,6 @@ function Jhat = jacobn(qbhat, qhat, Kx, Kz, alpha, beta, Lx, Lz)
 Nx = size(Kx,2);
 Nz = size(Kx,1);
 
-%% DE-ALIASING
-
-Nxp = floor(3*Nx/2);
-Nzp = floor(3*Nz/2);
-sx  = floor((Nxp-Nx)/2);
-sz  = floor((Nzp-Nz)/2);
-pad = @(A) ifftshift(padarray(fftshift(reshape(A, Nz, Nx)), [sz, sx], 0, 'both')); 
-
 %% CALCULATE DERIVATIVES IN SPECTRAL SPACE
 
 dx_qbhat = diffn(qbhat, Kx);
@@ -28,10 +20,10 @@ dz_qhat  = diffn(qhat, Kz, Lz, beta);
 
 %% RESHAPE DERIVATIVES
 
-dx_Qbhat = pad(dx_qbhat);
-dz_Qbhat = pad(dz_qbhat);
-dx_Qhat  = pad(dx_qhat);
-dz_Qhat  = pad(dz_qhat);
+dx_Qbhat = reshape(dx_qbhat, Nz, Nx);
+dz_Qbhat = reshape(dz_qbhat, Nz, Nx);
+dx_Qhat  = reshape(dx_qhat, Nz, Nx);
+dz_Qhat  = reshape(dz_qhat, Nz, Nx);
 
 %% PERFORM IFFTs
 
@@ -46,8 +38,7 @@ J = (dz_Qb.*dx_Q) - (dx_Qb.*dz_Q);
 
 %% BACK TO FOURIER SPACE AND UNWRAP
 
-Jhat_temp = fftshift(fft2(J));
-Jhat = ifftshift(Jhat_temp(1+sz:sz+Nz, 1+sx:sx+Nx));
+Jhat = fft2(J);
 Jhat = Jhat(:);
 
 end

@@ -27,12 +27,13 @@ osc3.tracked_eigs(real(osc3.tracked_eigs)<0) = NaN;
 trackedevals = figure;
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96])
 hold on
-plot(Reb, real(stat.tracked_eigs), '-o', 'linewidth', lw)
-plot(Reb, real(osc1.tracked_eigs), '-s', 'linewidth', lw)
-plot(Reb, real(osc2.tracked_eigs), '-s', 'linewidth', lw)
-plot(Reb, real(osc3.tracked_eigs), '-s', 'linewidth', lw)
+plot(stat.Reb, real(stat.tracked_eigs), '-o', 'linewidth', lw)
+plot(osc1.Reb, real(osc1.tracked_eigs), '-s', 'linewidth', lw)
+plot(osc2.Reb, real(osc2.tracked_eigs), '-s', 'linewidth', lw)
+plot(osc3.Reb, real(osc3.tracked_eigs), '-s', 'linewidth', lw)
 xlabel('$\mathrm{Re}_b$', 'interpreter', 'latex')
 ylabel('$\mathrm{Fr}\,\mathcal{R}\left[\sigma\right]$', 'interpreter', 'latex')
+legend('stat', 'osc1', 'osc2', 'osc3')
 set(gca, 'fontsize', fs)
 xlim([Reb(1), Reb(end)])
 axis square
@@ -40,5 +41,5 @@ grid on
 box on
 set(gca, 'linewidth', lw, 'fontsize', fs, 'XScale', 'log', 'YScale', 'linear', 'ticklabelinterpreter', 'latex', 'GridLineStyle', ':')
 drawnow
-plotname = sprintf('Alpha0.00_Instabilities.png');
+plotname = sprintf('Alpha0.50_Instabilities.png');
 exportgraphics(trackedevals, plotname, 'ContentType', 'vector', 'Resolution', 500);

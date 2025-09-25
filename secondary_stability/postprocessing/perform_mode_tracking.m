@@ -14,15 +14,16 @@ lw   = 3;
 
 %% PARAMETERS
 
-Reb            = [1:20, 30:10:100];
+% Reb            = [1:14, 16:20, 30:10:100];
+Reb            = [6:12, 14, 17, 18, 30:10:100];
 Fr             = 0.01;
-alpha          = 0;
+alpha          = 0.33;
 beta           = 0;
-Reb_start      = 30;
-ref_idx        = 7;
+Reb_start      = 100;
+ref_idx        = 4;
 overlap_thresh = 0.56;
 w_omega        = 1;
-output_file    = 'oscillatory_mode_3_data';
+output_file    = 'oscillatory_mode_2_data';
 
 %% GET FILE NAMES
 
@@ -155,7 +156,7 @@ grid on
 box on
 set(gca, 'linewidth', lw, 'fontsize', fs, 'XScale', 'log', 'YScale', 'linear', 'ticklabelinterpreter', 'latex', 'GridLineStyle', ':')
 drawnow
-plotname = sprintf('OscillatoryInstab3Growth.png');
+plotname = [output_file, '.png'];
 exportgraphics(trackedevals, plotname, 'ContentType', 'vector', 'Resolution', 500);
 
 %% SAVE TRACKED DATA

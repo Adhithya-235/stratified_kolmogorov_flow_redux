@@ -28,9 +28,9 @@ Fr_assumed_for_eigenvalues = 0.01;
 
 %% USER INPUTS
 
-Reb_val   = 30;
-alpha_val = 0;
-eigenfunction_index_to_plot = 3; % Renamed for clarity
+Reb_val   = 100;
+alpha_val = 0.5;
+eigenfunction_index_to_plot = 1; % Renamed for clarity
 
 if isnan(Reb_val) || isnan(alpha_val) || isnan(eigenfunction_index_to_plot) || ...
    eigenfunction_index_to_plot < 1 || floor(eigenfunction_index_to_plot) ~= eigenfunction_index_to_plot
