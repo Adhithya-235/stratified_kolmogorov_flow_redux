@@ -11,13 +11,16 @@ function Jhat = jacobn(qbhat, qhat, Kx, Kz, alpha, beta, Lx, Lz)
 Nx = size(Kx,2);
 Nz = size(Kx,1);
 
-%% DE-ALIASING
+%% CREATE A TEMPORARY MESH FOR THE FLOQUET MULTIPLIER
 
-Nxp = floor(3*Nx/2);
-Nzp = floor(3*Nz/2);
-sx  = floor((Nxp-Nx)/2);
-sz  = floor((Nzp-Nz)/2);
-pad = @(A) ifftshift(padarray(fftshift(reshape(A, Nz, Nx)), [sz, sx], 0, 'both')); 
+x = 0:(Lx/Nx):Lx - (Lx/Nx);
+z = 0:(Lz/Nz):Lz - (Lz/Nz);
+[X,Z] = meshgrid(x,z); 
+
+%% CREATE THE FLOQUET MULTIPLIER
+
+floq   = exp(1i*alpha*2*pi*X/Lx + 1i*beta*2*pi*Z/Lz);
+defloq = exp(-1i*alpha*2*pi*X/Lx - 1i*beta*2*pi*Z/Lz);
 
 %% CALCULATE DERIVATIVES IN SPECTRAL SPACE
 
@@ -28,17 +31,17 @@ dz_qhat  = diffn(qhat, Kz, Lz, beta);
 
 %% RESHAPE DERIVATIVES
 
-dx_Qbhat = pad(dx_qbhat);
-dz_Qbhat = pad(dz_qbhat);
-dx_Qhat  = pad(dx_qhat);
-dz_Qhat  = pad(dz_qhat);
+dx_Qbhat = reshape(dx_qbhat, Nz, Nx);
+dz_Qbhat = reshape(dz_qbhat, Nz, Nx);
+dx_Qhat  = reshape(dx_qhat, Nz, Nx);
+dz_Qhat  = reshape(dz_qhat, Nz, Nx);
 
 %% PERFORM IFFTs
 
 dx_Qb = ifft2(dx_Qbhat);
 dz_Qb = ifft2(dz_Qbhat);
-dx_Q  = ifft2(dx_Qhat);
-dz_Q  = ifft2(dz_Qhat);
+dx_Q  = floq.*ifft2(dx_Qhat);
+dz_Q  = floq.*ifft2(dz_Qhat);
 
 %% COMPUTE JACOBIAN IN GRID SPACE
 
@@ -46,8 +49,7 @@ J = (dz_Qb.*dx_Q) - (dx_Qb.*dz_Q);
 
 %% BACK TO FOURIER SPACE AND UNWRAP
 
-Jhat_temp = fftshift(fft2(J));
-Jhat = ifftshift(Jhat_temp(1+sz:sz+Nz, 1+sx:sx+Nx));
+Jhat = fft2(defloq.*J);
 Jhat = Jhat(:);
 
 end
