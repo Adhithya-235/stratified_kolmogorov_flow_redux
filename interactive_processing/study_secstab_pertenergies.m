@@ -8,8 +8,8 @@ addpath('../utility_belt');
 
 %% DNS FILE PARAMETERS
 
-folder_name = '2025-09-04_08-02-34'; 
-data_folder = 'results2_ecs100'; 
+folder_name = '2025-10-09_13-41-31'; 
+data_folder = 'results2_ecs15'; 
 file_name   = 'field_snapshots'; 
 stride      = 1; 
 svec        = 1:15; 
@@ -19,7 +19,7 @@ unwrap      = 0;
 %% DNS SIMULATION PARAMETERS
 
 Fr = 0.01;
-Rb = 6;
+Rb = 15;
 Pr = 1;
 Lx = 2*0.03;
 Lz = 2*pi/3;
@@ -101,7 +101,7 @@ disp('Ending volume average.')
 %% CHECK AGAINST LINEAR GROWTH RATE
 
 tlin1 = 0:0.001:1;
-grcv1 = (gpoten(1))*exp(2*15*(tlin1-tlin1(1)));
+grcv1 = (gpoten(1))*exp(2*5.26*(tlin1-tlin1(1)));
 
 %% PLOT TIMESERIES
 
@@ -115,8 +115,8 @@ xlabel('$t$', 'interpreter', 'latex')
 ylabel('Pert Energy', 'interpreter', 'latex')
 legend('Enstrophy','PE', 'SSGR', 'interpreter', 'latex')
 set(gca, 'fontsize', 30)
-% xlim([t(1), t(end)])
-xlim([0, 1])
+xlim([t(1), t(end)])
+% xlim([0, 1])
 grid on
 box on
 set(gca, 'linewidth', 5, 'XScale', 'linear', 'YScale', 'log')

@@ -15,15 +15,15 @@ cmap = slanCM('magma');
 
 %% PARAMETERS
 
-Reb     = 100;
+Reb     = 15;
 Fr      = 0.01;
 alpha   = 0.5;
 beta    = 0;
-efn_idx = 2;
+efn_idx = 1;
 
 %% FILEPATH CONFIG - EIGENFUNCTION
 
-ParentFolder = sprintf('../solutions_branch_1_Pr_1');
+ParentFolder = sprintf('../testsolutions');
 SolnFolder   = sprintf('Reb%.2f_alpha%.2f',Reb,alpha);
 SolnFile     = sprintf('spectrum_Reb%.2f_alpha%.2f',Reb,alpha);
 FilePath     = sprintf('%s/%s/%s',ParentFolder,SolnFolder,SolnFile);
@@ -48,9 +48,13 @@ kz  = (2*pi/Lzs) * [0:(Nz/2-1), (-Nz/2):-1];
 
 [Kx, Kz] = meshgrid(kx, kz);
 
+%% DISPLAY EIGENVALUES
+
+disp(eigvals)
+
 %% GENERATE 2D EIGENFUNCTION FIELDS (PLOT AND SAVE)
 
-[Xip, Bp, Psip] = process_eigenfunction_2(eigvecs, efn_idx, Kx, Kz, Fr, alpha, beta, Lxs, Lzs);
+[Xip, Bp, Psip] = process_eigenfunction(eigvecs, efn_idx, Kx, Kz, Fr, alpha, beta, Lxs, Lzs);
 
 %% PLOTTING BLOCK
 

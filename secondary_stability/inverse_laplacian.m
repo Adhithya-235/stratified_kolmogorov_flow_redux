@@ -27,8 +27,12 @@ L  = -((Fr.^2).*((Kx + kx*alpha*I).^2) + (Kz + kz*beta*I).^2);
 
 DQhat       = reshape(Dqhat, Nz, Nx); 
 Qhat        = zeros(size(DQhat));
-Qhat(L0~=0) = DQhat(L0~=0)./L(L0~=0);
-Qhat(L0==0) = 0;
+if alpha == 0
+    Qhat(L0~=0) = DQhat(L0~=0)./L(L0~=0);
+    Qhat(L0==0) = 0;
+else
+    Qhat = DQhat./L;
+end
 qhat = Qhat(:);
 
 end

@@ -15,7 +15,7 @@ cmap = slanCM('magma');
 
 %% PARAMETERS
 
-Reb     = 6;
+Reb     = 15;
 Fr      = 0.01;
 alpha   = 0.5;
 beta    = 0;
@@ -24,7 +24,7 @@ efn_idx = 1;
 %% FILEPATH CONFIG - EIGENFUNCTION
 
 % ParentFolder = sprintf('../solutions_branch_1_Pr_1');
-ParentFolder = sprintf('../solutions');
+ParentFolder = sprintf('../testsolutions');
 SolnFolder   = sprintf('Reb%.2f_alpha%.2f',Reb,alpha);
 SolnFile     = sprintf('spectrum_Reb%.2f_alpha%.2f.mat',Reb,alpha);
 FilePath     = sprintf('%s/%s/%s',ParentFolder,SolnFolder,SolnFile);
@@ -80,10 +80,13 @@ Psip    = normfac*Psip;
 
 %% LOAD ECS
 
+alpha = 0.5;
 [Xi, B, Psi] = get_ecs_fields(Reb, Nx/128);
-Xi           = interpft(repmat(Xi, 1, 1/alpha), Nx, 2);
-B            = interpft(repmat(B, 1, 1/alpha), Nx, 2);
-Psi          = interpft(repmat(Psi, 1, 1/alpha), Nx, 2);
+if alpha ~= 0
+    Xi           = interpft(repmat(Xi, 1, 1/alpha), Nx, 2);
+    B            = interpft(repmat(B, 1, 1/alpha), Nx, 2);
+    Psi          = interpft(repmat(Psi, 1, 1/alpha), Nx, 2);
+end
 
 %% CONSTRUCT INITIAL CONDITION
 

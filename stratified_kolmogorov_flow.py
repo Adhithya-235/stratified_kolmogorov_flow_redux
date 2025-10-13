@@ -67,7 +67,7 @@ if MPI.COMM_WORLD.rank == 0:
 
 # CREATE RESULTS FOLDER
 
-path = 'results2_ecs100/'
+path = 'results2_ecs15/'
 if MPI.COMM_WORLD.rank == 0:
     if not os.path.exists(path):
         os.mkdir(path)    
@@ -157,7 +157,7 @@ if not pathlib.Path('restart.h5').exists():
 
     # GET EIGENFUNCTIONS FROM FILE
 
-    eigenfuncs = h5py.File('initialize_ecs_Reb6.00_alpha0.50_idx1.h5','r')
+    eigenfuncs = h5py.File('initialize_ecs_Reb15.00_alpha0.50_idx1.h5','r')
 
     # BACKGROUND CONFIGURATIONS + EIGENFUNCTIONS
     

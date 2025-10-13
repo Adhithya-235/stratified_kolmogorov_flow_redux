@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=sskf_code
-#SBATCH --output=/mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/logger2_ecs100.out
-#SBATCH --error=/mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/logger2_ecs100.err
+#SBATCH --output=/mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/logger2_ecs15.out
+#SBATCH --error=/mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/logger2_ecs15.err
 #SBATCH --mail-user=as1751@wildcats.unh.edu
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks-per-node=1
@@ -22,7 +22,7 @@ conda activate dedalus-20221006
 cd $HOME/Command_Center/Research/stratified_kolmogorov_flow_redux/
 folder_name=$(date +'%Y-%m-%d_%H-%M-%S')
 mkdir "$folder_name"
-data_folder=results2_ecs100
+data_folder=results2_ecs15
 mkdir "$data_folder"
 
 # Make plotting subfolders
@@ -31,13 +31,13 @@ mkdir -p "$folder_name/plots/frames"
 mkdir -p "$folder_name/plots/movies"
 
 # Run simulation, merge processes
-mpiexec -n 8 python3 ~/Command_Center/Research/stratified_kolmogorov_flow_redux/stratified_kolmogorov_flow.py --Rb=6.0 --Pr=1.0 --Fr=0.01 --Nx=128 --Nz=128 --Tend=15.0 
+mpiexec -n 8 python3 ~/Command_Center/Research/stratified_kolmogorov_flow_redux/stratified_kolmogorov_flow.py --Rb=15.0 --Pr=1.0 --Fr=0.01 --Nx=128 --Nz=128 --Tend=15.0 
 mpiexec -n 8 python3 -m dedalus merge_procs "$data_folder"/field_snapshots
 mpiexec -n 8 python3 -m dedalus merge_procs "$data_folder"/energy_timeseries
 mpiexec -n 8 python3 -m dedalus merge_procs "$data_folder"/checkpointing_data
 
 # Move generated data and logging files to the created folder
-mv "$data_folder/" logger2_ecs100.* "$folder_name/"
+mv "$data_folder/" logger2_ecs15.* "$folder_name/"
 cp stratified_kolmogorov_flow.py marvin_run_ss_simulation.sbatch "$folder_name/"
 
 # Create analysis plots after navigating to post processing code folder
