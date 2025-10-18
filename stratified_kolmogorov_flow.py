@@ -3,7 +3,7 @@
 """
 Usage: 
   stratified_kolmogorov_flow.py [--Rb=<buoyancy_reynolds> --Pr=<prandtl> --Fr=<froude> \
-  --Nx=<Nx> --Nz=<Nz> --Tend=<stop_time>] 
+  --Nx=<Nx> --Nz=<Nz> --Tend=<stop_time> --Efnid=<efn_idx> --alpha=<alpha>] 
   
 Options:
   --Rb=<buoyancy_reynolds>          Buoyancy Reynolds Number [default: 50.0]
@@ -11,7 +11,9 @@ Options:
   --Fr=<froude>                     Froude Number [default: 0.02]
   --Nx=<Nx>                         Number of downwind modes [default: 128]
   --Nz=<Nz>                         Number of vertical modes [default: 128]
-  --Tend=<stop_time>                Simulation stop time [default: 100.0]  
+  --Tend=<stop_time>                Simulation stop time [default: 100.0]
+  --Efnid=<efn_idx>                 Eigenfunction index [default: 1]  
+  --alpha=<alpha>                   Floquet Modifier [default: 0.00]
 """
 
 """
@@ -59,6 +61,8 @@ Froude       = float(args['--Fr'])                                              
 Lx, Lz       = (2.0*0.03, 2.0*np.pi/3.0)                                                       # Box Size
 Nx, Nz       = (int(args['--Nx']), int(args['--Nz']))                                          # No. of Gridpoints
 stop_time    = float(args['--Tend'])                                                           # Sim. stop time
+efn_idx      = int(args['--Efnid'])                                                            # Eigenfunction Index
+alpha        = float(args['--alpha'])                                                          # Floquet Modifier     
 
 # LOGGER: RECORD INPUT PARAMETERS
 
@@ -67,7 +71,8 @@ if MPI.COMM_WORLD.rank == 0:
 
 # CREATE RESULTS FOLDER
 
-path = 'results2_ecs15/'
+runID = f"Reb{ReynoldsB:.2f}_alpha{alpha:.2f}_idx{efn_idx:d}"
+path  = f"symmetrybreak/{runID}"
 if MPI.COMM_WORLD.rank == 0:
     if not os.path.exists(path):
         os.mkdir(path)    
@@ -157,7 +162,8 @@ if not pathlib.Path('restart.h5').exists():
 
     # GET EIGENFUNCTIONS FROM FILE
 
-    eigenfuncs = h5py.File('initialize_ecs_Reb15.00_alpha0.50_idx1.h5','r')
+    ICPath     = f"initial_conditions/{runID}/initialize_ecs_{runID}.h5"
+    eigenfuncs = h5py.File(ICPath,'r')
 
     # BACKGROUND CONFIGURATIONS + EIGENFUNCTIONS
     

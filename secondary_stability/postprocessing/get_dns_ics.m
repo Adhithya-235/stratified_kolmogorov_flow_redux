@@ -15,16 +15,16 @@ cmap = slanCM('magma');
 
 %% PARAMETERS
 
-Reb     = 15;
+Reb     = 18;
 Fr      = 0.01;
-alpha   = 0.5;
+alpha   = 0;
 beta    = 0;
-efn_idx = 1;
+efn_idx = 3;
 
 %% FILEPATH CONFIG - EIGENFUNCTION
 
-% ParentFolder = sprintf('../solutions_branch_1_Pr_1');
-ParentFolder = sprintf('../testsolutions');
+ParentFolder = sprintf('../solutions_branch_1_Pr_1');
+% ParentFolder = sprintf('../testsolutions');
 SolnFolder   = sprintf('Reb%.2f_alpha%.2f',Reb,alpha);
 SolnFile     = sprintf('spectrum_Reb%.2f_alpha%.2f.mat',Reb,alpha);
 FilePath     = sprintf('%s/%s/%s',ParentFolder,SolnFolder,SolnFile);
@@ -80,7 +80,6 @@ Psip    = normfac*Psip;
 
 %% LOAD ECS
 
-alpha = 0.5;
 [Xi, B, Psi] = get_ecs_fields(Reb, Nx/128);
 if alpha ~= 0
     Xi           = interpft(repmat(Xi, 1, 1/alpha), Nx, 2);
@@ -94,6 +93,14 @@ Xi_in  = Xi + Xip;
 B_in   = B + Bp;
 Psi_in = Psi + Psip;
 
+%% SAVE FOLDER
+
+IdString = sprintf('Reb%.2f_alpha%.2f_idx%d',Reb,alpha,efn_idx');
+SavePath = [sprintf('../../initial_conditions/'), IdString, '/'];
+if ~exist(SavePath, 'dir')
+    mkdir(SavePath);
+end
+
 %% PLOTTING BLOCK -- OPTIONAL, ONLY FOR DEBUGGINH
 
 x    = (0:(Nx-1))*(Lx/Nx);
@@ -103,19 +110,19 @@ zp   = (0:(Nz-1))*(Lz/Nx);
 
 efns = figure('WindowState', 'maximized', 'Color', 'w');
 help_plot_3_fields(xp/Fr, zp, Xip, Bp, Psip, '$\xi^\prime$', '$b^\prime$', '$\psi^\prime$', cmap, fs, lw)
-exportgraphics(efns, 'efns.png', 'ContentType', 'vector', 'Resolution', 500);
+exportgraphics(efns, [SavePath, 'efns.png'], 'ContentType', 'vector', 'Resolution', 500);
 
 ecs = figure('WindowState', 'maximized', 'Color', 'w');
 help_plot_3_fields(x/Fr, z, Xi, B, Psi, '$\xi_s$', '$b_s$', '$\psi_s$', cmap, fs, lw)
-exportgraphics(ecs, 'ecs.png', 'ContentType', 'vector', 'Resolution', 500);
+exportgraphics(ecs, [SavePath, 'ecs.png'], 'ContentType', 'vector', 'Resolution', 500);
 
 init = figure('WindowState', 'maximized', 'Color', 'w');
 help_plot_3_fields(xp/Fr, zp, Xi_in, B_in, Psi_in, '$\xi_{in}$', '$b_{in}$', '$\psi_{in}$', cmap, fs, lw)
-exportgraphics(init, 'init.png', 'ContentType', 'vector', 'Resolution', 500);
+exportgraphics(init, [SavePath, 'init.png'], 'ContentType', 'vector', 'Resolution', 500);
 
 %% SAVE AS HDF5
 
-H5FileName = sprintf('initialize_ecs_Reb%.2f_alpha%.2f_idx%d.h5',Reb,alpha,efn_idx);
+H5FileName = [SavePath, sprintf('initialize_ecs_Reb%.2f_alpha%.2f_idx%d.h5',Reb,alpha,efn_idx)];
 datasets   = ["/zeta", "/psi", "/b"];
 variables  = {Xi_in, Psi_in, B_in};
 

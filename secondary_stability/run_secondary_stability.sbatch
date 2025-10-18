@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=secstab_sweep
 #SBATCH --nodes=1
-#SBATCH --ntasks=112            # <-- MODIFIED: 4 * 28 = 112 tasks
+#SBATCH --ntasks=56            # <-- MODIFIED: 4 * 28 = 112 tasks
 #SBATCH --cpus-per-task=1
 #SBATCH --time=120:00:00
 #SBATCH --chdir=/mnt/lustre/space/as1751/Command_Center/Research/stratified_kolmogorov_flow_redux/secondary_stability
@@ -15,7 +15,7 @@ module load MATLAB
 mkdir -p slurm_logs solutions
 
 # 2) Define all ALPHA values
-ALPHA_VALUES=(0.50 0.3333333333333333 0.25 0.20) # Example 4 values of alpha
+ALPHA_VALUES=(0.3333333333333333 0.25) # Example 4 values of alpha
 
 # 3) Gather all .mat ECS files into a Bash array
 ECSFILES=(import/ECS_real_field_for_Reb=*.mat)
@@ -103,7 +103,7 @@ srun \
 
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
-    matlab -singleCompThread -batch "clear; close all; clc; Reb=${REB_VAL}; Pr=1; Fr=0.01; alpha=${ALPHA_VAL}; beta=0; numEig=30; residualtol=1e-12; maxit=10000; outputflag=1; ecs_stability;"
+    matlab -singleCompThread -batch "clear; clc; Reb=${REB_VAL}; Pr=1; Fr=0.01; alpha=${ALPHA_VAL}; beta=0; numEig=30; residualtol=1e-12; maxit=10000; outputflag=1; ecs_stability;"
   fi
 
   # e) Move this task’s Slurm logs into its solution folder
