@@ -11,7 +11,7 @@
 
 %% READ DATA
 
-[t, ~, ke, pe, te] = get_timeseries_data(data_folder, folder_name, maxs);
+[t, ~, ke, pe, ~] = get_timeseries_data(data_folder, folder_name, maxs);
 
 %% PLOT TIMESERIES
 
@@ -20,10 +20,9 @@ set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96])
 hold on
 plot(t, ke, '-', 'linewidth', 4)
 plot(t, pe, '-', 'linewidth', 4)
-plot(t, te, '-', 'linewidth', 4)
 xlabel('$t$', 'interpreter', 'latex')
 ylabel('Energy', 'interpreter', 'latex')
-legend('KE','PE','TE', 'interpreter', 'latex')
+legend('KE','PE', 'interpreter', 'latex')
 set(gca, 'fontsize', 30)
 xlim([t(1), t(end)])
 grid on
@@ -32,5 +31,5 @@ set(gca, 'linewidth', 5, 'XScale', 'linear', 'YScale', 'linear')
 
 %% SAVE VARIABLES AND PLOT
 
-saveas(f, sprintf('../%s/plots/timeseries/te_timeseries.png', folder_name)) 
+saveas(f, sprintf('../%s/%s/plots/timeseries/te_timeseries.png', folder_name, data_folder)) 
 

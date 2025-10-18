@@ -50,6 +50,6 @@ for i = 1:nf
     
     %% SAVE PLOT
      
-    saveas(f, sprintf('../%s/plots/frames/frame_time_%3.3f.png', folder_name, t(i))) 
+    saveas(f, sprintf('../%s/%s/plots/frames/frame_time_%3.3f.png', folder_name, data_folder, t(i))) 
 
 end
